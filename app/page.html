@@ -217,18 +217,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 }
 .andet-label svg { color: var(--accent); }
 
-/* ── Address tabs ── */
-.addr-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-.addr-tab {
-  flex: 1; padding: 10px; border-radius: var(--radius); border: 1px solid var(--border);
-  background: var(--surface-2); color: var(--text-2);
-  font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.2s;
-}
-.addr-tab:hover { border-color: rgba(241,86,46,0.3); color: var(--text); }
-.addr-tab.active { background: var(--accent-dim); border-color: rgba(241,86,46,0.4); color: var(--accent); }
-.addr-tab svg { flex-shrink: 0; }
-
 /* ── Alt addr toggle ── */
 .alt-addr-toggle {
   display: flex; align-items: center; gap: 10px;
@@ -619,16 +607,6 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <!-- Leveringsadresse -->
       <div class="card">
         <div class="card-label">Leveringsadresse</div>
-        <div class="addr-tabs">
-          <button class="addr-tab active" id="tab-butik" onclick="setAddrTab('butik')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a1 1 0 01-1-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1 1v4a1 1 0 01-1 1H5a2 2 0 01-2-2z"/></svg>
-            Butiks-adresse
-          </button>
-          <button class="addr-tab" id="tab-privat" onclick="setAddrTab('privat')">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Privat-adresse
-          </button>
-        </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div class="field">
             <label>Gadenavn/nr <span class="req">*</span></label>
@@ -916,8 +894,6 @@ function stepQty(id, delta) {
 // ── Address tabs ──
 function setAddrTab(type) {
   addrType = type;
-  document.querySelectorAll('.addr-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + type).classList.add('active');
 }
 
 function toggleAltAddr() {

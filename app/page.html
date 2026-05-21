@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Bestil tryksager — Brandsurface</title>
+<title>Order print materials — Brandsurface</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -394,11 +394,11 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     </svg>
   </a>
   <div class="step-pills">
-    <div class="step-pill active" id="pill-1"><span class="step-dot"></span>Udfyld</div>
+    <div class="step-pill active" id="pill-1"><span class="step-dot"></span>Fill in</div>
     <div class="step-sep">›</div>
-    <div class="step-pill" id="pill-2"><span class="step-dot"></span>Gennemgå</div>
+    <div class="step-pill" id="pill-2"><span class="step-dot"></span>Review</div>
     <div class="step-sep">›</div>
-    <div class="step-pill" id="pill-3"><span class="step-dot"></span>Afsendt</div>
+    <div class="step-pill" id="pill-3"><span class="step-dot"></span>Sent</div>
   </div>
 </header>
 
@@ -409,8 +409,8 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 <div class="form-wrap">
 
   <div class="form-hero">
-    <h1>Bestil tryksager</h1>
-    <p>Vælg produkter, angiv antal og udfyld leveringsinfo — du gennemgår alt inden afsendelse.</p>
+    <h1>Order print materials</h1>
+    <p>Select products, enter quantities and fill in delivery details — you'll review everything before submitting.</p>
   </div>
 
   <div class="grid-main">
@@ -418,23 +418,23 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
       <!-- Grundoplysninger -->
       <div class="card">
-        <div class="card-label">Grundoplysninger</div>
+        <div class="card-label">Basic information</div>
         <div style="display:flex;flex-direction:column;gap:16px;">
           <div class="field">
-            <label>Kampagne <span class="req">*</span></label>
-            <input type="text" id="butiksnavn" placeholder="Kampagnenavn"/>
-            <div class="field-error" id="err-butiksnavn">Udfyld venligst kampagne</div>
+            <label>Campaign <span class="req">*</span></label>
+            <input type="text" id="butiksnavn" placeholder="Campaign name"/>
+            <div class="field-error" id="err-butiksnavn">Please fill in campaign name</div>
           </div>
           <div class="row-2">
             <div class="field">
-              <label>Bestillers navn <span class="req">*</span></label>
-              <input type="text" id="bestiller_navn" placeholder="Fornavn Efternavn"/>
-              <div class="field-error" id="err-bestiller_navn">Udfyld venligst dit navn</div>
+              <label>Orderer's name <span class="req">*</span></label>
+              <input type="text" id="bestiller_navn" placeholder="First Last"/>
+              <div class="field-error" id="err-bestiller_navn">Please enter your name</div>
             </div>
             <div class="field">
-              <label>Din e-mail <span class="req">*</span></label>
-              <input type="email" id="bestiller_email" placeholder="dig@firma.dk"/>
-              <div class="field-error" id="err-bestiller_email">Ugyldig e-mailadresse</div>
+              <label>Your email <span class="req">*</span></label>
+              <input type="email" id="bestiller_email" placeholder="you@company.com"/>
+              <div class="field-error" id="err-bestiller_email">Invalid email address</div>
             </div>
           </div>
         </div>
@@ -442,14 +442,14 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
       <!-- Produkter -->
       <div class="card">
-        <div class="card-label">Produkter</div>
+        <div class="card-label">Products</div>
         <div class="produkt-grid">
 
-          <!-- Plakat -->
+          <!-- Poster -->
           <div class="produkt-item">
             <div class="produkt-name">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-              Plakat
+              Poster
             </div>
             <div class="produkt-inner">
               <div class="field">
@@ -462,7 +462,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
                 </div>
               </div>
               <div class="qty-row">
-                <span class="qty-label">Antal</span>
+                <span class="qty-label">Qty</span>
                 <div class="qty-stepper">
                   <button type="button" onclick="stepQty('qty-plakat',-1)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -476,15 +476,15 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             </div>
           </div>
 
-          <!-- Bordkort -->
+          <!-- Table card -->
           <div class="produkt-item">
             <div class="produkt-name">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-              Bordkort
+              Table card
             </div>
             <div class="produkt-inner">
               <div class="qty-row">
-                <span class="qty-label">Antal</span>
+                <span class="qty-label">Qty</span>
                 <div class="qty-stepper">
                   <button type="button" onclick="stepQty('qty-bordkort',-1)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -498,15 +498,15 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             </div>
           </div>
 
-          <!-- Bordrytter -->
+          <!-- Table tent -->
           <div class="produkt-item">
             <div class="produkt-name">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 012-2h14"/><path d="M4 19a2 2 0 002 2h14V7H6a2 2 0 00-2 2v12z"/></svg>
-              Bordrytter
+              Table tent
             </div>
             <div class="produkt-inner">
               <div class="qty-row">
-                <span class="qty-label">Antal</span>
+                <span class="qty-label">Qty</span>
                 <div class="qty-stepper">
                   <button type="button" onclick="stepQty('qty-bordrytter',-1)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -528,7 +528,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             </div>
             <div class="produkt-inner">
               <div class="qty-row">
-                <span class="qty-label">Antal</span>
+                <span class="qty-label">Qty</span>
                 <div class="qty-stepper">
                   <button type="button" onclick="stepQty('qty-banner',-1)">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -548,9 +548,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         <div class="andet-card">
           <div class="andet-label">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            Andet
+            Other
           </div>
-          <textarea id="andet" placeholder="Beskriv andre tryksager eller særlige ønsker..."></textarea>
+          <textarea id="andet" placeholder="Describe other print materials or special requests..."></textarea>
         </div>
 
       </div><!-- /produkter card -->
@@ -559,7 +559,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <button class="collapse-trigger" id="mf-trigger" onclick="toggleMailflow()">
         <span style="display:flex;align-items:center;gap:8px;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-          Sådan virker mail-flowet
+          How the mail flow works
         </span>
         <svg class="collapse-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
       </button>
@@ -569,31 +569,31 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             <div class="mf-line"></div>
             <div class="mf-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 12h8M8 17h4"/></svg></div>
             <div class="mf-body">
-              <div class="mf-title">Du sender bestillingen</div>
-              <div class="mf-desc">En ordrebekræftelse sendes straks til din e-mail.</div>
+              <div class="mf-title">You submit the order</div>
+              <div class="mf-desc">An order confirmation is sent immediately to your email.</div>
             </div>
           </div>
           <div class="mf-step">
             <div class="mf-line"></div>
             <div class="mf-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg></div>
             <div class="mf-body">
-              <div class="mf-title">Godkend eller fortryd</div>
-              <div class="mf-desc">I mailen vælger du:<span style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"><span class="mf-tag yes">Godkend</span><span class="mf-tag no">Fortryd &amp; ret</span></span></div>
+              <div class="mf-title">Approve or cancel</div>
+              <div class="mf-desc">In the email you choose:<span style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;"><span class="mf-tag yes">Approve</span><span class="mf-tag no">Cancel &amp; edit</span></span></div>
             </div>
           </div>
           <div class="mf-step">
             <div class="mf-line"></div>
             <div class="mf-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg></div>
             <div class="mf-body">
-              <div class="mf-title">Fortryd → Ret &amp; gensend</div>
-              <div class="mf-desc">Du sendes tilbage til udfyldt formular — intet genskrives.</div>
+              <div class="mf-title">Cancel → Edit &amp; resubmit</div>
+              <div class="mf-desc">You're returned to the pre-filled form — nothing is rewritten.</div>
             </div>
           </div>
           <div class="mf-step">
             <div class="mf-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></div>
             <div class="mf-body">
-              <div class="mf-title">Godkend → Brandsurface modtager</div>
-              <div class="mf-desc">Ingen dobbelt-ordrer. Vi modtager kun godkendte bestillinger.</div>
+              <div class="mf-title">Approve → Brandsurface receives</div>
+              <div class="mf-desc">No duplicate orders. We only receive approved orders.</div>
             </div>
           </div>
         </div>
@@ -606,64 +606,64 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
       <!-- Leveringsadresse -->
       <div class="card">
-        <div class="card-label">Leveringsadresse</div>
+        <div class="card-label">Delivery address</div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div class="field">
-            <label>Gadenavn/nr <span class="req">*</span></label>
-            <input type="text" id="gade" placeholder="Strandvejen 123"/>
+            <label>Street address <span class="req">*</span></label>
+            <input type="text" id="gade" placeholder="Street name 123"/>
           </div>
           <div class="row-2">
             <div class="field">
-              <label>Postnummer</label>
+              <label>Postcode</label>
               <input type="text" id="postnr" placeholder="2100"/>
             </div>
             <div class="field">
-              <label>By</label>
-              <input type="text" id="by" placeholder="København"/>
+              <label>City</label>
+              <input type="text" id="by" placeholder="Copenhagen"/>
             </div>
           </div>
           <div class="field">
-            <label>Land</label>
-            <input type="text" id="land" placeholder="Danmark"/>
+            <label>Country</label>
+            <input type="text" id="land" placeholder="Denmark"/>
           </div>
           <div class="divider" style="margin:2px 0;"></div>
           <div class="field">
-            <label>Att. (Modtager)</label>
-            <input type="text" id="att" placeholder="Navn på modtager"/>
+            <label>Attn. (Recipient)</label>
+            <input type="text" id="att" placeholder="Recipient name"/>
           </div>
           <div class="field">
-            <label>Telefon</label>
+            <label>Phone</label>
             <input type="text" id="tlf_lev" placeholder="+45 12 34 56 78"/>
           </div>
         </div>
 
         <div class="alt-addr-toggle" id="alt-addr-toggle" onclick="toggleAltAddr()">
           <div class="toggle-switch"></div>
-          <span class="alt-addr-toggle-label">Levér til en anden adresse</span>
+          <span class="alt-addr-toggle-label">Deliver to a different address</span>
         </div>
 
         <div class="alt-addr-fields" id="alt-addr-fields">
           <div class="field">
-            <label>Gadenavn/nr</label>
-            <input type="text" id="alt_gade" placeholder="Anden adresse"/>
+            <label>Street address</label>
+            <input type="text" id="alt_gade" placeholder="Alternative address"/>
           </div>
           <div class="row-2">
             <div class="field">
-              <label>Postnummer</label>
+              <label>Postcode</label>
               <input type="text" id="alt_postnr" placeholder="1000"/>
             </div>
             <div class="field">
-              <label>By</label>
-              <input type="text" id="alt_by" placeholder="København"/>
+              <label>City</label>
+              <input type="text" id="alt_by" placeholder="Copenhagen"/>
             </div>
           </div>
           <div class="divider" style="margin:2px 0;"></div>
           <div class="field">
-            <label>Att. (Modtager)</label>
-            <input type="text" id="alt_att" placeholder="Navn på modtager"/>
+            <label>Attn. (Recipient)</label>
+            <input type="text" id="alt_att" placeholder="Recipient name"/>
           </div>
           <div class="field">
-            <label>Telefon</label>
+            <label>Phone</label>
             <input type="text" id="alt_tlf" placeholder="+45 12 34 56 78"/>
           </div>
         </div>
@@ -671,19 +671,19 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
       <!-- Salgskonsulent -->
       <div class="card">
-        <div class="card-label">Carlsberg Salgskonsulent</div>
+        <div class="card-label">Carlsberg Sales Consultant</div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div class="field">
-            <label>Navn</label>
-            <input type="text" id="konsulent_navn" placeholder="Konsulentens navn"/>
+            <label>Name</label>
+            <input type="text" id="konsulent_navn" placeholder="Consultant's name"/>
           </div>
           <div class="field">
-            <label>Telefon</label>
+            <label>Phone</label>
             <input type="text" id="konsulent_tlf" placeholder="+45 12 34 56 78"/>
           </div>
           <div class="field">
-            <label>E-mail</label>
-            <input type="email" id="konsulent_email" placeholder="konsulent@carlsberg.dk"/>
+            <label>Email</label>
+            <input type="email" id="konsulent_email" placeholder="consultant@carlsberg.dk"/>
           </div>
         </div>
       </div>
@@ -694,11 +694,11 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
 <div class="bottom-bar">
   <div class="bottom-bar-info">
-    <div class="bbl">Klar til at gennemgå?</div>
-    <div class="bbs">Du kan rette inden afsendelse</div>
+    <div class="bbl">Ready to review?</div>
+    <div class="bbs">You can make changes before submitting</div>
   </div>
   <button class="btn-primary" onclick="goToReview()">
-    Gennemgå bestilling
+    Review order
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
 </div>
@@ -708,48 +708,48 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 <!-- ═══ VIEW 2: GENNEMGÅ ═══ -->
 <div class="view" id="view-review">
 <div class="review-wrap">
-  <h2 class="review-title">Gennemgå bestilling</h2>
-  <p class="review-sub">Tjek alle detaljer — du kan stadig gå tilbage og rette.</p>
+  <h2 class="review-title">Review order</h2>
+  <p class="review-sub">Check all details — you can still go back and make changes.</p>
 
   <div class="review-section">
-    <div class="review-section-label">Bestiller</div>
+    <div class="review-section-label">Orderer</div>
     <div class="review-grid">
-      <div class="review-field"><div class="rf-label">Kampagne</div><div class="rf-val" id="rv-butiksnavn">—</div></div>
-      <div class="review-field"><div class="rf-label">Navn</div><div class="rf-val" id="rv-navn">—</div></div>
-      <div class="review-field full"><div class="rf-label">E-mail (bekræftelse sendes hertil)</div><div class="rf-val" id="rv-email" style="color:var(--accent);font-family:'DM Mono',monospace;font-size:13px;">—</div></div>
+      <div class="review-field"><div class="rf-label">Campaign</div><div class="rf-val" id="rv-butiksnavn">—</div></div>
+      <div class="review-field"><div class="rf-label">Name</div><div class="rf-val" id="rv-navn">—</div></div>
+      <div class="review-field full"><div class="rf-label">Email (confirmation sent here)</div><div class="rf-val" id="rv-email" style="color:var(--accent);font-family:'DM Mono',monospace;font-size:13px;">—</div></div>
     </div>
   </div>
 
   <div class="review-section">
-    <div class="review-section-label">Produkter</div>
+    <div class="review-section-label">Products</div>
     <div id="rv-products"></div>
   </div>
 
   <div class="review-section">
-    <div class="review-section-label">Levering</div>
+    <div class="review-section-label">Delivery</div>
     <div class="review-grid">
-      <div class="review-field"><div class="rf-label">Adressetype</div><div class="rf-val" id="rv-addrtype">—</div></div>
-      <div class="review-field"><div class="rf-label">Adresse</div><div class="rf-val" id="rv-addr">—</div></div>
-      <div class="review-field"><div class="rf-label">Modtager</div><div class="rf-val" id="rv-att">—</div></div>
-      <div class="review-field"><div class="rf-label">Telefon</div><div class="rf-val" id="rv-tlf">—</div></div>
+      <div class="review-field"><div class="rf-label">Address type</div><div class="rf-val" id="rv-addrtype">—</div></div>
+      <div class="review-field"><div class="rf-label">Address</div><div class="rf-val" id="rv-addr">—</div></div>
+      <div class="review-field"><div class="rf-label">Recipient</div><div class="rf-val" id="rv-att">—</div></div>
+      <div class="review-field"><div class="rf-label">Phone</div><div class="rf-val" id="rv-tlf">—</div></div>
     </div>
   </div>
 
   <div class="review-section" id="rv-alt-section" style="display:none;">
-    <div class="review-section-label">Alternativ leveringsadresse</div>
+    <div class="review-section-label">Alternative delivery address</div>
     <div class="review-grid">
-      <div class="review-field full"><div class="rf-label">Adresse</div><div class="rf-val" id="rv-alt-addr">—</div></div>
-      <div class="review-field"><div class="rf-label">Modtager</div><div class="rf-val" id="rv-alt-att">—</div></div>
-      <div class="review-field"><div class="rf-label">Telefon</div><div class="rf-val" id="rv-alt-tlf">—</div></div>
+      <div class="review-field full"><div class="rf-label">Address</div><div class="rf-val" id="rv-alt-addr">—</div></div>
+      <div class="review-field"><div class="rf-label">Recipient</div><div class="rf-val" id="rv-alt-att">—</div></div>
+      <div class="review-field"><div class="rf-label">Phone</div><div class="rf-val" id="rv-alt-tlf">—</div></div>
     </div>
   </div>
 
   <div class="review-section">
-    <div class="review-section-label">Salgskonsulent</div>
+    <div class="review-section-label">Sales consultant</div>
     <div class="review-grid">
-      <div class="review-field"><div class="rf-label">Navn</div><div class="rf-val" id="rv-k-navn">—</div></div>
-      <div class="review-field"><div class="rf-label">Telefon</div><div class="rf-val" id="rv-k-tlf">—</div></div>
-      <div class="review-field full"><div class="rf-label">E-mail</div><div class="rf-val" id="rv-k-email">—</div></div>
+      <div class="review-field"><div class="rf-label">Name</div><div class="rf-val" id="rv-k-navn">—</div></div>
+      <div class="review-field"><div class="rf-label">Phone</div><div class="rf-val" id="rv-k-tlf">—</div></div>
+      <div class="review-field full"><div class="rf-label">Email</div><div class="rf-val" id="rv-k-email">—</div></div>
     </div>
   </div>
 </div>
@@ -757,10 +757,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 <div class="bottom-bar">
   <button class="btn-secondary" onclick="goBack()">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Ret bestilling
+    Edit order
   </button>
   <button class="btn-primary" onclick="submitOrder()">
-    Send bestilling
+    Submit order
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M10 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
 </div>
@@ -773,30 +773,30 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   <div class="confirm-icon">
     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4l-10 8L2 4"/></svg>
   </div>
-  <h2 class="confirm-title">Bestilling sendt!</h2>
-  <p class="confirm-text">Vi har sendt en ordrebekræftelse til</p>
+  <h2 class="confirm-title">Order submitted!</h2>
+  <p class="confirm-text">We've sent an order confirmation to</p>
   <div class="confirm-email" id="conf-email">—</div>
-  <p class="confirm-text" style="margin-top:4px;">Tjek din indbakke og evt. spam-mappen.</p>
+  <p class="confirm-text" style="margin-top:4px;">Check your inbox and possible spam folder.</p>
 
   <div class="confirm-steps">
-    <div class="cs-title">Hvad sker der nu?</div>
+    <div class="cs-title">What happens next?</div>
     <div class="cs-item">
       <div class="cs-num">1</div>
-      <div class="cs-body"><div class="cs-h">Du modtager bekræftelsesmail</div><div class="cs-d">Mailen indeholder et komplet overblik over din bestilling.</div></div>
+      <div class="cs-body"><div class="cs-h">You receive a confirmation email</div><div class="cs-d">The email contains a complete overview of your order.</div></div>
     </div>
     <div class="cs-item">
       <div class="cs-num">2</div>
-      <div class="cs-body"><div class="cs-h">Godkend eller fortryd</div><div class="cs-d">Klik <strong style="color:var(--success)">Godkend</strong> — eller <strong style="color:var(--error)">Fortryd</strong> for at gå tilbage og rette.</div></div>
+      <div class="cs-body"><div class="cs-h">Approve or cancel</div><div class="cs-d">Click <strong style="color:var(--success)">Approve</strong> — or <strong style="color:var(--error)">Cancel</strong> to go back and make changes.</div></div>
     </div>
     <div class="cs-item">
       <div class="cs-num">3</div>
-      <div class="cs-body"><div class="cs-h">Brandsurface modtager ordren</div><div class="cs-d">Vi sætter produktionen i gang så snart du godkender.</div></div>
+      <div class="cs-body"><div class="cs-h">Brandsurface receives the order</div><div class="cs-d">We start production as soon as you approve.</div></div>
     </div>
   </div>
 
   <button class="btn-ghost" onclick="resetForm()">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Lav ny bestilling
+    Place new order
   </button>
 </div>
 </div><!-- /view-confirm -->
@@ -827,11 +827,11 @@ async function prefillFromOrder(orderId) {
 
     // Produkter
     if (Array.isArray(d.produkter)) {
-      const qtyMap = { Plakat:'qty-plakat', Bordkort:'qty-bordkort', Bordrytter:'qty-bordrytter', Banner:'qty-banner' };
+      const qtyMap = { Poster:'qty-plakat', 'Table card':'qty-bordkort', 'Table tent':'qty-bordrytter', Banner:'qty-banner' };
       d.produkter.forEach(p => {
         const qid = qtyMap[p.type];
         if (qid) document.getElementById(qid).value = p.antal;
-        if (p.type === 'Plakat' && p.format) {
+        if (p.type === 'Poster' && p.format) {
           document.querySelectorAll('#fmt-plakat .format-chip').forEach(chip => {
             if (chip.textContent === p.format) {
               chip.classList.add('active');
@@ -867,13 +867,13 @@ async function prefillFromOrder(orderId) {
     if (d.konsulent_tlf)   document.getElementById('konsulent_tlf').value = d.konsulent_tlf;
     if (d.konsulent_email) document.getElementById('konsulent_email').value = d.konsulent_email;
 
-    showToast('Bestilling indlæst — ret og send igen', '');
+    showToast('Order loaded — edit and resubmit', '');
   } catch (err) {
     console.error('Prefill fejl:', err);
   }
 }
 
-// Tjek om siden er åbnet via ?edit= link fra fortryd-mail
+// Check if page was opened via ?edit= link from cancel email
 const urlParams = new URLSearchParams(window.location.search);
 const editId = urlParams.get('edit');
 if (editId) {
@@ -930,12 +930,12 @@ function validate() {
     if (invalid) ok = false;
   });
 
-  // At mindst ét produkt har antal > 0 eller andet er udfyldt
+  // At least one product must have qty > 0 or other field must be filled
   const qtyIds = ['qty-plakat', 'qty-bordkort', 'qty-bordrytter', 'qty-banner'];
   const hasQty = qtyIds.some(id => parseInt(document.getElementById(id)?.value || 0) > 0);
   const hasAndet = document.getElementById('andet')?.value.trim();
   if (!hasQty && !hasAndet) {
-    showToast('Vælg mindst ét produkt med antal', 'error');
+    showToast('Please select at least one product with a quantity', 'error');
     ok = false;
   }
   return ok;
@@ -950,7 +950,7 @@ function goToReview() {
   v('rv-butiksnavn', g('butiksnavn'));
   v('rv-navn', g('bestiller_navn'));
   v('rv-email', g('bestiller_email'));
-  v('rv-addrtype', addrType === 'butik' ? 'Butiks-adresse' : 'Privat-adresse');
+  v('rv-addrtype', addrType === 'butik' ? 'Business address' : 'Private address');
   v('rv-addr', [g('gade'), g('postnr'), g('by'), g('land')].filter(Boolean).join(', ') || '—');
   v('rv-att', g('att') || '—');
   v('rv-tlf', g('tlf_lev') || '—');
@@ -973,9 +973,9 @@ function goToReview() {
   const rvProd = document.getElementById('rv-products');
   rvProd.innerHTML = '';
   const produkter = [
-    { label: 'Plakat', id: 'qty-plakat', extra: () => selectedFormats.plakat ? `Format: ${selectedFormats.plakat}` : null },
-    { label: 'Bordkort', id: 'qty-bordkort', extra: () => null },
-    { label: 'Bordrytter', id: 'qty-bordrytter', extra: () => null },
+    { label: 'Poster', id: 'qty-plakat', extra: () => selectedFormats.plakat ? `Format: ${selectedFormats.plakat}` : null },
+    { label: 'Table card', id: 'qty-bordkort', extra: () => null },
+    { label: 'Table tent', id: 'qty-bordrytter', extra: () => null },
     { label: 'Banner', id: 'qty-banner', extra: () => null },
   ];
 
@@ -1023,14 +1023,14 @@ async function submitOrder() {
   const btn = document.querySelector('#view-review .btn-primary');
   const originalHTML = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = 'Sender...';
+  btn.innerHTML = 'Sending...';
 
   // Saml produkter
   const produkter = [];
   const qtyMap = [
-    { type: 'Plakat',     id: 'qty-plakat',     formatKey: 'plakat' },
-    { type: 'Bordkort',   id: 'qty-bordkort',   formatKey: null },
-    { type: 'Bordrytter', id: 'qty-bordrytter', formatKey: null },
+    { type: 'Poster',     id: 'qty-plakat',     formatKey: 'plakat' },
+    { type: 'Table card', id: 'qty-bordkort',   formatKey: null },
+    { type: 'Table tent', id: 'qty-bordrytter', formatKey: null },
     { type: 'Banner',     id: 'qty-banner',      formatKey: null },
   ];
   qtyMap.forEach(({ type, id, formatKey }) => {
@@ -1075,19 +1075,19 @@ async function submitOrder() {
     });
     const data = await res.json();
 
-    if (!res.ok) throw new Error(data.error || 'Serverfejl');
+    if (!res.ok) throw new Error(data.error || 'Server error');
 
     document.getElementById('conf-email').textContent = g('bestiller_email');
     showView('view-confirm'); setPill(3);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    showToast('Bestilling sendt! Tjek din e-mail.', 'success');
+    showToast('Order submitted! Check your email.', 'success');
 
     // Ryd edit-state efter succes
     window.__editId = null;
     window.history.replaceState({}, '', '/');
 
   } catch (err) {
-    showToast('Fejl: ' + err.message, 'error');
+    showToast('Error: ' + err.message, 'error');
     btn.disabled = false;
     btn.innerHTML = originalHTML;
   }

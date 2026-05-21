@@ -143,38 +143,33 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 .field-error { font-size: 11px; color: var(--error); margin-top: 3px; display: none; }
 .field-error.show { display: block; }
 
-/* ── Product type cards (placat, bordkort etc.) ── */
-.produkt-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+/* ── Product rows (stacked, options on the right) ── */
+.produkt-section-label {
+  font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+  margin: 22px 0 10px;
 }
+.produkt-section-label:first-of-type { margin-top: 0; }
 
-.produkt-item {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  display: flex; flex-direction: column; gap: 14px;
+.produkt-list { display: flex; flex-direction: column; gap: 10px; }
+
+.produkt-row {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 12px 16px;
   transition: border-color 0.2s;
-  position: relative;
 }
-
-.produkt-header {
-  display: flex; align-items: center; justify-content: space-between;
-}
+.produkt-row:hover { border-color: var(--border-light); }
 
 .produkt-name {
   font-size: 14px; font-weight: 600; color: var(--text);
   display: flex; align-items: center; gap: 8px;
+  flex: 0 0 auto;
 }
-
 .produkt-name svg { color: var(--accent); flex-shrink: 0; }
 
-.produkt-inner { display: flex; flex-direction: column; gap: 10px; }
-
-/* Format chip group */
-.format-group { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Options (formats / aspect ratios) — pushed to the right */
+.produkt-row-options { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
 .format-chip {
   padding: 5px 11px; border-radius: 6px;
   border: 1px solid var(--border); background: var(--surface-3);
@@ -187,10 +182,8 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 }
 
 /* Quantity stepper */
-.qty-row { display: flex; align-items: center; gap: 8px; }
-.qty-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); white-space: nowrap; }
 .qty-stepper {
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: center; gap: 0; flex: 0 0 auto;
   border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface-3);
 }
 .qty-stepper button {
@@ -206,16 +199,19 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 }
 .qty-stepper input:focus { box-shadow: none; }
 
-/* Andet felt */
+/* Other field */
 .andet-card {
   background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg);
-  padding: 20px; display: flex; flex-direction: column; gap: 12px; margin-top: 4px;
+  padding: 16px; display: flex; flex-direction: column; gap: 12px;
 }
-.andet-label {
-  font-size: 14px; font-weight: 600; color: var(--text);
-  display: flex; align-items: center; gap: 8px; margin-bottom: 2px;
+
+/* Artwork */
+.artwork-card {
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 16px; display: flex; flex-direction: column; gap: 12px;
 }
-.andet-label svg { color: var(--accent); }
+.artwork-card .alt-addr-toggle { margin-top: 0; }
+.artwork-note { font-size: 13px; color: var(--text-2); line-height: 1.55; }
 
 /* ── Alt addr toggle ── */
 .alt-addr-toggle {
@@ -355,7 +351,8 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   .bottom-bar { padding: 14px 20px; }
   .row-2 { grid-template-columns: 1fr; }
   .review-grid { grid-template-columns: 1fr; }
-  .produkt-grid { grid-template-columns: 1fr; }
+  .produkt-row { flex-wrap: wrap; }
+  .produkt-row-options { justify-content: flex-start; order: 3; flex-basis: 100%; }
 }
 </style>
 </head>
@@ -443,114 +440,193 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <!-- Produkter -->
       <div class="card">
         <div class="card-label">Products</div>
-        <div class="produkt-grid">
+
+        <!-- Print materials -->
+        <div class="produkt-section-label">Print materials</div>
+        <div class="produkt-list">
 
           <!-- Poster -->
-          <div class="produkt-item">
+          <div class="produkt-row">
             <div class="produkt-name">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
               Poster
             </div>
-            <div class="produkt-inner">
-              <div class="field">
-                <label>Format</label>
-                <div class="format-group" id="fmt-plakat">
-                  <span class="format-chip" onclick="selectFormat(this,'plakat')">A4</span>
-                  <span class="format-chip" onclick="selectFormat(this,'plakat')">50×70 cm</span>
-                  <span class="format-chip" onclick="selectFormat(this,'plakat')">A3</span>
-                  <span class="format-chip" onclick="selectFormat(this,'plakat')">70×100 cm</span>
-                </div>
-              </div>
-              <div class="qty-row">
-                <span class="qty-label">Qty</span>
-                <div class="qty-stepper">
-                  <button type="button" onclick="stepQty('qty-plakat',-1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                  <input type="number" id="qty-plakat" value="0" min="0"/>
-                  <button type="button" onclick="stepQty('qty-plakat',1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                </div>
-              </div>
+            <div class="produkt-row-options" id="fmt-poster">
+              <span class="format-chip" onclick="selectFormat(this,'poster')">A4</span>
+              <span class="format-chip" onclick="selectFormat(this,'poster')">50×70 cm</span>
+              <span class="format-chip" onclick="selectFormat(this,'poster')">A3</span>
+              <span class="format-chip" onclick="selectFormat(this,'poster')">70×100 cm</span>
+            </div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-poster',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-poster" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-poster',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             </div>
           </div>
 
-          <!-- Table card -->
-          <div class="produkt-item">
+          <!-- Flag line -->
+          <div class="produkt-row">
             <div class="produkt-name">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
-              Table card
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+              Flag line
             </div>
-            <div class="produkt-inner">
-              <div class="qty-row">
-                <span class="qty-label">Qty</span>
-                <div class="qty-stepper">
-                  <button type="button" onclick="stepQty('qty-bordkort',-1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                  <input type="number" id="qty-bordkort" value="0" min="0"/>
-                  <button type="button" onclick="stepQty('qty-bordkort',1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                </div>
-              </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-flagline',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-flagline" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-flagline',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Wobbler -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+              Wobbler
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-wobbler',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-wobbler" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-wobbler',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Stickers -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3H5a2 2 0 00-2 2v14a2 2 0 002 2h10l6-6V5a2 2 0 00-2-2z"/><path d="M15 21v-6h6"/></svg>
+              Stickers
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-stickers',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-stickers" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-stickers',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Pallet hanging sign -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              Pallet hanging sign
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-pallethangingsign',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-pallethangingsign" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-pallethangingsign',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Ellipse -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="9" ry="6"/></svg>
+              Ellipse
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-ellipse',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-ellipse" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-ellipse',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Floor sticker -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              Floor sticker
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-floorsticker',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-floorsticker" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-floorsticker',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Pallet wrap -->
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+              Pallet wrap
+            </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-palletwrap',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-palletwrap" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-palletwrap',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             </div>
           </div>
 
           <!-- Table tent -->
-          <div class="produkt-item">
+          <div class="produkt-row">
             <div class="produkt-name">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 012-2h14"/><path d="M4 19a2 2 0 002 2h14V7H6a2 2 0 00-2 2v12z"/></svg>
               Table tent
             </div>
-            <div class="produkt-inner">
-              <div class="qty-row">
-                <span class="qty-label">Qty</span>
-                <div class="qty-stepper">
-                  <button type="button" onclick="stepQty('qty-bordrytter',-1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                  <input type="number" id="qty-bordrytter" value="0" min="0"/>
-                  <button type="button" onclick="stepQty('qty-bordrytter',1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                </div>
-              </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-tabletent',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-tabletent" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-tabletent',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             </div>
           </div>
 
-          <!-- Banner -->
-          <div class="produkt-item">
+          <!-- Table card -->
+          <div class="produkt-row">
             <div class="produkt-name">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v10H4z"/><path d="M4 14l4 4M4 4v16"/></svg>
-              Banner
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              Table card
             </div>
-            <div class="produkt-inner">
-              <div class="qty-row">
-                <span class="qty-label">Qty</span>
-                <div class="qty-stepper">
-                  <button type="button" onclick="stepQty('qty-banner',-1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                  <input type="number" id="qty-banner" value="0" min="0"/>
-                  <button type="button" onclick="stepQty('qty-banner',1)">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </button>
-                </div>
-              </div>
+            <div class="produkt-row-options"></div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-tablecard',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-tablecard" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-tablecard',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
             </div>
           </div>
 
-        </div><!-- /produkt-grid -->
+        </div><!-- /print materials -->
 
-        <!-- Andet -->
+        <!-- SoMe assets -->
+        <div class="produkt-section-label">SoMe assets</div>
+        <div class="produkt-list">
+          <div class="produkt-row">
+            <div class="produkt-name">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              Stills / Video
+            </div>
+            <div class="produkt-row-options" id="fmt-some">
+              <span class="format-chip" onclick="selectFormat(this,'some')">1:1</span>
+              <span class="format-chip" onclick="selectFormat(this,'some')">9:16</span>
+              <span class="format-chip" onclick="selectFormat(this,'some')">4:5</span>
+            </div>
+            <div class="qty-stepper">
+              <button type="button" onclick="stepQty('qty-some',-1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+              <input type="number" id="qty-some" value="0" min="0"/>
+              <button type="button" onclick="stepQty('qty-some',1)"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other -->
+        <div class="produkt-section-label">Other</div>
         <div class="andet-card">
-          <div class="andet-label">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            Other
-          </div>
           <textarea id="andet" placeholder="Describe other print materials or special requests..."></textarea>
+        </div>
+
+        <!-- Artwork -->
+        <div class="produkt-section-label">Artwork</div>
+        <div class="artwork-card">
+          <div class="alt-addr-toggle" id="artwork-toggle" onclick="toggleArtwork()">
+            <div class="toggle-switch"></div>
+            <span class="alt-addr-toggle-label">I want help creating artwork (attach key visual)</span>
+          </div>
+          <p class="artwork-note">BrandSurface will contact you for further information about the key visual, after which you'll receive a price estimate for the work.</p>
         </div>
 
       </div><!-- /produkter card -->
@@ -808,7 +884,24 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 // ── State ──
 let addrType = 'butik';
 let altAddrActive = false;
-const selectedFormats = { plakat: null };
+let artworkRequested = false;
+const selectedFormats = { poster: null, some: null };
+
+// Single source of truth for products (qty input id + optional format key)
+const PRODUCTS = [
+  { type: 'Poster',              id: 'qty-poster',            fmt: 'poster' },
+  { type: 'Flag line',           id: 'qty-flagline',          fmt: null },
+  { type: 'Wobbler',             id: 'qty-wobbler',           fmt: null },
+  { type: 'Stickers',            id: 'qty-stickers',          fmt: null },
+  { type: 'Pallet hanging sign', id: 'qty-pallethangingsign', fmt: null },
+  { type: 'Ellipse',             id: 'qty-ellipse',           fmt: null },
+  { type: 'Floor sticker',       id: 'qty-floorsticker',      fmt: null },
+  { type: 'Pallet wrap',         id: 'qty-palletwrap',        fmt: null },
+  { type: 'Table tent',          id: 'qty-tabletent',         fmt: null },
+  { type: 'Table card',          id: 'qty-tablecard',         fmt: null },
+  { type: 'Stills / Video',      id: 'qty-some',              fmt: 'some' },
+];
+const ARTWORK_TYPE = 'Artwork';
 
 // ── Prefill fra ?edit=ordreId (når kunde fortryder via mail-link) ──
 window.__editId = null;
@@ -827,15 +920,20 @@ async function prefillFromOrder(orderId) {
 
     // Produkter
     if (Array.isArray(d.produkter)) {
-      const qtyMap = { Poster:'qty-plakat', 'Table card':'qty-bordkort', 'Table tent':'qty-bordrytter', Banner:'qty-banner' };
       d.produkter.forEach(p => {
-        const qid = qtyMap[p.type];
-        if (qid) document.getElementById(qid).value = p.antal;
-        if (p.type === 'Poster' && p.format) {
-          document.querySelectorAll('#fmt-plakat .format-chip').forEach(chip => {
+        if (p.type === ARTWORK_TYPE) {
+          if (!artworkRequested) toggleArtwork();
+          return;
+        }
+        const cfg = PRODUCTS.find(x => x.type === p.type);
+        if (!cfg) return;
+        const qtyEl = document.getElementById(cfg.id);
+        if (qtyEl && p.antal != null) qtyEl.value = p.antal;
+        if (cfg.fmt && p.format) {
+          document.querySelectorAll('#fmt-' + cfg.fmt + ' .format-chip').forEach(chip => {
             if (chip.textContent === p.format) {
               chip.classList.add('active');
-              selectedFormats.plakat = p.format;
+              selectedFormats[cfg.fmt] = p.format;
             }
           });
         }
@@ -907,6 +1005,11 @@ function toggleAltAddr() {
   document.getElementById('alt-addr-fields').classList.toggle('show', altAddrActive);
 }
 
+function toggleArtwork() {
+  artworkRequested = !artworkRequested;
+  document.getElementById('artwork-toggle').classList.toggle('active', artworkRequested);
+}
+
 function toggleMailflow() {
   document.getElementById('mf-trigger').classList.toggle('open');
   document.getElementById('mf-content').classList.toggle('open');
@@ -930,12 +1033,11 @@ function validate() {
     if (invalid) ok = false;
   });
 
-  // At least one product must have qty > 0 or other field must be filled
-  const qtyIds = ['qty-plakat', 'qty-bordkort', 'qty-bordrytter', 'qty-banner'];
-  const hasQty = qtyIds.some(id => parseInt(document.getElementById(id)?.value || 0) > 0);
+  // At least one product (qty > 0), the Other field, or an artwork request is needed
+  const hasQty = PRODUCTS.some(p => parseInt(document.getElementById(p.id)?.value || 0) > 0);
   const hasAndet = document.getElementById('andet')?.value.trim();
-  if (!hasQty && !hasAndet) {
-    showToast('Please select at least one product with a quantity', 'error');
+  if (!hasQty && !hasAndet && !artworkRequested) {
+    showToast('Please select at least one product, fill in Other, or request artwork help', 'error');
     ok = false;
   }
   return ok;
@@ -972,23 +1074,17 @@ function goToReview() {
   // Produkter
   const rvProd = document.getElementById('rv-products');
   rvProd.innerHTML = '';
-  const produkter = [
-    { label: 'Poster', id: 'qty-plakat', extra: () => selectedFormats.plakat ? `Format: ${selectedFormats.plakat}` : null },
-    { label: 'Table card', id: 'qty-bordkort', extra: () => null },
-    { label: 'Table tent', id: 'qty-bordrytter', extra: () => null },
-    { label: 'Banner', id: 'qty-banner', extra: () => null },
-  ];
 
-  produkter.forEach(({ label, id, extra }) => {
+  PRODUCTS.forEach(({ type, id, fmt }) => {
     const qty = parseInt(document.getElementById(id)?.value || 0);
     if (qty <= 0) return;
-    const extraStr = extra();
+    const extraStr = fmt && selectedFormats[fmt] ? `Format: ${selectedFormats[fmt]}` : null;
     const d = document.createElement('div');
     d.className = 'rv-produkt-row';
     d.innerHTML = `
-      <div class="rv-produkt-name">${label}</div>
+      <div class="rv-produkt-name">${type}</div>
       <div class="rv-produkt-meta">
-        Antal: ${qty}${extraStr ? '<br>' + extraStr : ''}
+        Qty: ${qty}${extraStr ? '<br>' + extraStr : ''}
       </div>
     `;
     rvProd.appendChild(d);
@@ -1002,8 +1098,18 @@ function goToReview() {
     d.style.alignItems = 'flex-start';
     d.style.gap = '6px';
     d.innerHTML = `
-      <div class="rv-produkt-name">Andet</div>
+      <div class="rv-produkt-name">Other</div>
       <div style="font-size:13px;color:var(--text-2);line-height:1.5;">${andet}</div>
+    `;
+    rvProd.appendChild(d);
+  }
+
+  if (artworkRequested) {
+    const d = document.createElement('div');
+    d.className = 'rv-produkt-row';
+    d.innerHTML = `
+      <div class="rv-produkt-name">Artwork</div>
+      <div class="rv-produkt-meta">Help requested</div>
     `;
     rvProd.appendChild(d);
   }
@@ -1025,22 +1131,17 @@ async function submitOrder() {
   btn.disabled = true;
   btn.innerHTML = 'Sending...';
 
-  // Saml produkter
+  // Collect products
   const produkter = [];
-  const qtyMap = [
-    { type: 'Poster',     id: 'qty-plakat',     formatKey: 'plakat' },
-    { type: 'Table card', id: 'qty-bordkort',   formatKey: null },
-    { type: 'Table tent', id: 'qty-bordrytter', formatKey: null },
-    { type: 'Banner',     id: 'qty-banner',      formatKey: null },
-  ];
-  qtyMap.forEach(({ type, id, formatKey }) => {
+  PRODUCTS.forEach(({ type, id, fmt }) => {
     const antal = parseInt(document.getElementById(id)?.value || 0);
     if (antal > 0) {
       const entry = { type, antal };
-      if (formatKey && selectedFormats[formatKey]) entry.format = selectedFormats[formatKey];
+      if (fmt && selectedFormats[fmt]) entry.format = selectedFormats[fmt];
       produkter.push(entry);
     }
   });
+  if (artworkRequested) produkter.push({ type: ARTWORK_TYPE, help: true });
 
   const payload = {
     butiksnavn:      g('butiksnavn'),
@@ -1098,9 +1199,11 @@ function resetForm() {
   document.querySelectorAll('input[type="number"]').forEach(el => el.value = 0);
   document.getElementById('andet').value = '';
   document.querySelectorAll('.format-chip').forEach(c => c.classList.remove('active'));
-  selectedFormats.plakat = null;
+  selectedFormats.poster = null;
+  selectedFormats.some = null;
   addrType = 'butik'; setAddrTab('butik');
   if (altAddrActive) toggleAltAddr();
+  if (artworkRequested) toggleArtwork();
   showView('view-form'); setPill(1); window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 

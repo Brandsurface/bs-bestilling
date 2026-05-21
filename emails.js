@@ -5,9 +5,10 @@ export function buildConfirmEmail({ order, baseUrl }) {
   const produkterHtml = order.produkter
     .map(p => {
       const format = p.format ? ` — ${p.format}` : ''
+      const qtyCell = p.antal != null ? `${p.antal} pcs` : 'Help requested'
       return `<tr>
         <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e;color:#f0ede8;">${p.type}${format}</td>
-        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e;color:#b8b4ae;text-align:right;">${p.antal} pcs</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #2e2e2e;color:#b8b4ae;text-align:right;">${qtyCell}</td>
       </tr>`
     })
     .join('')
@@ -120,7 +121,8 @@ export function buildBrandsurfaceEmail({ order }) {
   const produkterHtml = order.produkter
     .map(p => {
       const format = p.format ? ` — ${p.format}` : ''
-      return `<li style="margin-bottom:4px;color:#f0ede8;">${p.type}${format}: <strong>${p.antal} pcs</strong></li>`
+      const qtyText = p.antal != null ? `${p.antal} pcs` : 'Help requested'
+      return `<li style="margin-bottom:4px;color:#f0ede8;">${p.type}${format}: <strong>${qtyText}</strong></li>`
     })
     .join('')
 

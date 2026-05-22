@@ -45,20 +45,33 @@ export async function GET(request) {
 
   // Send mail til Brandsurface
   try {
-    if (process.env.RESEND_API_KEY && process.env.BRANDSURFACE_EMAIL) {
+    const { data: setting } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'brandsurface_email')
+      .single()
+    const recipient = (setting?.value || process.env.BRANDSURFACE_EMAIL || '').trim()
+
+    if (process.env.RESEND_API_KEY && recipient) {
       const resend = new Resend(process.env.RESEND_API_KEY)
       const fromAddress = process.env.RESEND_FROM || 'onboarding@resend.dev'
+
+      // Sending now — cancel any pending scheduled send to avoid a duplicate
+      if (order.scheduled_email_id) {
+        try { await resend.emails.cancel(order.scheduled_email_id) } catch (e) { console.warn('Kunne ikke annullere planlagt mail:', e?.message) }
+      }
+
       const { subject, html } = buildBrandsurfaceEmail({ order })
 
       await resend.emails.send({
         from:    `Brandsurface Ordre <${fromAddress}>`,
-        to:      process.env.BRANDSURFACE_EMAIL,
+        to:      recipient,
         replyTo: order.email,
         subject,
         html,
       })
     } else {
-      console.warn('RESEND_API_KEY eller BRANDSURFACE_EMAIL mangler — ingen mail sendt til Brandsurface')
+      console.warn('RESEND_API_KEY eller modtager mangler — ingen mail sendt til Brandsurface')
     }
   } catch (mailErr) {
     console.error('Brandsurface-mail fejl:', mailErr)

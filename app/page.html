@@ -540,6 +540,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <!-- Produkter -->
       <div class="card">
         <div class="card-label">Products</div>
+        <div class="field-error" id="err-products" style="margin-bottom:4px;">Please select at least one product and set a quantity</div>
 
         <!--PRODUCTS_SECTIONS-->
 
@@ -980,6 +981,13 @@ function updateQtyBadge(pid) {
   if (!el || !badge) return;
   const v = parseInt(el.value) || 0;
   badge.textContent = v > 0 ? ('× ' + v) : '';
+  if (v > 0) {
+    el.classList.remove('error');
+    document.getElementById('err-qty-' + pid)?.classList.remove('show');
+    if (PRODUCTS.some(p => parseInt(document.getElementById(p.qty)?.value || 0) > 0)) {
+      document.getElementById('err-products')?.classList.remove('show');
+    }
+  }
 }
 
 // ── File uploads (direct to Supabase Storage via signed URL) ──
@@ -1069,12 +1077,32 @@ function validate() {
     if (invalid) ok = false;
   });
 
-  // At least one product (qty > 0), the Other field, or a request toggle is needed
+  // Open accordions must have qty > 0
+  PRODUCTS.forEach(({ pid, qty: qtyId }) => {
+    const body = document.getElementById('accbody-' + pid);
+    const isOpen = body && body.parentElement.classList.contains('open');
+    const qtyEl = document.getElementById(qtyId);
+    const qty = parseInt(qtyEl?.value || 0);
+    const errEl = document.getElementById('err-qty-' + pid);
+    if (isOpen && qty <= 0) {
+      if (qtyEl) qtyEl.classList.add('error');
+      if (errEl) errEl.classList.add('show');
+      ok = false;
+    } else {
+      if (qtyEl) qtyEl.classList.remove('error');
+      if (errEl) errEl.classList.remove('show');
+    }
+  });
+
+  // At least one product, Other, or request toggle needed
   const hasQty = PRODUCTS.some(p => parseInt(document.getElementById(p.qty)?.value || 0) > 0);
   const hasAndet = document.getElementById('andet')?.value.trim();
+  const prodErrEl = document.getElementById('err-products');
   if (!hasQty && !hasAndet && !artworkRequested && !wetransferRequested) {
-    showToast('Please select at least one product, fill in Other, or request artwork help', 'error');
+    if (prodErrEl) prodErrEl.classList.add('show');
     ok = false;
+  } else {
+    if (prodErrEl) prodErrEl.classList.remove('show');
   }
 
   // GDPR consent must be accepted

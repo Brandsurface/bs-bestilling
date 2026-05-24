@@ -57,6 +57,7 @@ function renderItem(p) {
                   <button type="button" onclick="stepQty('${qid}',1)">${PLUS}</button>
                 </div>
               </div>
+              <div class="field-error" id="err-qty-${pid}">Please enter a quantity greater than 0</div>
               <div class="acc-comment">
                 <span class="opt-label">Comment</span>
                 <textarea id="${cid}" rows="2" placeholder="Notes for this product (optional)…"></textarea>

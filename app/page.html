@@ -956,9 +956,11 @@ function toggleProduct(pid, forceOpen) {
   else body.parentElement.classList.toggle('open');
 }
 
-// ── Option selection (multiple choices per group) ──
+// ── Option selection (one choice per group) ──
 function selectOption(chip, pid, groupIndex) {
-  chip.classList.toggle('active');
+  const wasActive = chip.classList.contains('active');
+  chip.parentElement.querySelectorAll('.format-chip.active').forEach(c => c.classList.remove('active'));
+  if (!wasActive) chip.classList.add('active');
   const prod = PRODUCTS.find(p => p.pid === pid);
   const name = prod && prod.groups[groupIndex];
   if (!name) return;

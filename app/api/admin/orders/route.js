@@ -13,6 +13,21 @@ export async function POST(req) {
 
   const form = await req.formData()
   const action = String(form.get('action') || '')
+
+  if (action === 'bulk-delete') {
+    const ids = form.getAll('ids').map(String).filter(Boolean)
+    if (!ids.length) return back(req, 'error')
+    const { data: list } = await supabase.from('orders').select('*').in('id', ids)
+    for (const o of list || []) {
+      await cancelScheduledSend(o)
+      if (Array.isArray(o.uploads) && o.uploads.length) {
+        try { await supabase.storage.from('order-uploads').remove(o.uploads.map(u => u.path)) } catch (e) { console.warn('Kunne ikke slette filer:', e?.message) }
+      }
+    }
+    const { error } = await supabase.from('orders').delete().in('id', ids)
+    return back(req, error ? 'error' : 'deleted')
+  }
+
   const id = String(form.get('id') || '')
   if (!id) return back(req, 'error')
 

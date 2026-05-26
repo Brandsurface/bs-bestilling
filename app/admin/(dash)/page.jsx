@@ -76,10 +76,22 @@ export default async function AdminOrders({ searchParams }) {
       {note && <div className={`a-note ${note[0]}`}>{note[1]}</div>}
       {error && <div className="a-note err">Could not load orders: {error.message}</div>}
 
+      <form id="bulk-form" method="POST" action="/api/admin/orders">
+        <input type="hidden" name="action" value="bulk-delete" />
+      </form>
+
+      <div id="bulk-bar" style={{ display: 'none', alignItems: 'center', gap: 14, marginBottom: 16, padding: '12px 16px', background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.3)', borderRadius: 12 }}>
+        <span style={{ fontSize: 14, color: '#f0ede8' }}><strong id="bulk-count">0</strong> selected</span>
+        <button type="submit" form="bulk-form" className="a-btn-danger" data-confirm="Delete the selected orders permanently? This cannot be undone." style={{ marginLeft: 'auto' }}>Delete selected</button>
+      </div>
+
       <div className="a-card" style={{ padding: 0, overflowX: 'auto' }}>
         <table className="a-table">
           <thead>
             <tr>
+              <th style={{ width: 36, paddingRight: 0 }}>
+                <input type="checkbox" id="sel-all" style={{ width: 16, height: 16, accentColor: '#f1562e', cursor: 'pointer' }} aria-label="Select all" />
+              </th>
               <th>Created</th>
               <th>Campaign</th>
               <th>Orderer</th>
@@ -94,6 +106,9 @@ export default async function AdminOrders({ searchParams }) {
               const isPending = o.status === 'pending' && (!o.send_after || new Date(o.send_after).getTime() > Date.now())
               return (
                 <tr key={o.id}>
+                  <td style={{ paddingRight: 0 }}>
+                    <input type="checkbox" className="ord-check" name="ids" value={o.id} form="bulk-form" style={{ width: 16, height: 16, accentColor: '#f1562e', cursor: 'pointer' }} aria-label={`Select order ${o.butiksnavn || o.id}`} />
+                  </td>
                   <td style={{ whiteSpace: 'nowrap', color: '#b8b4ae' }}>{fmtDate(o.created_at)}</td>
                   <td>
                     {o.butiksnavn || '—'}
@@ -133,11 +148,19 @@ export default async function AdminOrders({ searchParams }) {
               )
             })}
             {(!orders || orders.length === 0) && !error && (
-              <tr><td colSpan={6} style={{ color: '#7a7672' }}>No orders yet.</td></tr>
+              <tr><td colSpan={7} style={{ color: '#7a7672' }}>No orders yet.</td></tr>
             )}
           </tbody>
         </table>
       </div>
+
+      <script dangerouslySetInnerHTML={{ __html: `(function(){
+        function boxes(){return Array.prototype.slice.call(document.querySelectorAll('.ord-check'));}
+        var all=document.getElementById('sel-all'),bar=document.getElementById('bulk-bar'),cnt=document.getElementById('bulk-count');
+        function upd(){var b=boxes(),c=b.filter(function(x){return x.checked;}).length;if(cnt)cnt.textContent=c;if(bar)bar.style.display=c?'flex':'none';if(all){all.checked=c>0&&c===b.length;all.indeterminate=c>0&&c<b.length;}}
+        if(all)all.addEventListener('change',function(){boxes().forEach(function(x){x.checked=all.checked;});upd();});
+        document.addEventListener('change',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('ord-check'))upd();});
+      })();` }} />
     </>
   )
 }

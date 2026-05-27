@@ -25,6 +25,7 @@ export async function POST(req) {
       { key: 'help_box_html', value: helpHtml, updated_at: now },
     ], { onConflict: 'key' })
 
+  if (error) console.error('[settings] upsert error:', error.message)
   const status = error ? 'error' : 'saved'
   return NextResponse.redirect(new URL(`/admin/settings?status=${status}`, req.url), 303)
 }

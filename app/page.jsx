@@ -105,18 +105,21 @@ async function buildProducts() {
 
 async function buildHelpBox() {
   try {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('app_settings')
       .select('key, value')
       .in('key', ['help_box_active', 'help_box_html'])
+    if (error) { console.error('[help_box] DB error:', error.message); return '' }
     const map = Object.fromEntries((data || []).map(r => [r.key, r.value]))
+    console.log('[help_box] active:', map.help_box_active, 'html length:', map.help_box_html?.length)
     if (map.help_box_active !== '1' || !map.help_box_html) return ''
     return `
       <div class="card" style="margin-top:16px;">
         <div class="card-label">Need help?</div>
         <div class="help-box-content">${map.help_box_html}</div>
       </div>`
-  } catch {
+  } catch (e) {
+    console.error('[help_box] exception:', e?.message)
     return ''
   }
 }
@@ -128,7 +131,7 @@ export default async function Home() {
   const [{ sections, dataScript }, helpBox] = await Promise.all([buildProducts(), buildHelpBox()])
   html = html.replace('        <!--PRODUCTS_SECTIONS-->', sections)
   html = html.replace('/*PRODUCTS_JSON*/', dataScript)
-  html = html.replace('      <!--HELP_BOX-->', helpBox)
+  html = html.replace(/\s*<!--HELP_BOX-->/, helpBox)
 
   const headMatch = html.match(/<head[^>]*>([\s\S]*?)<\/head>/i)
   const headContent = headMatch ? headMatch[1] : ''

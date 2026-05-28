@@ -35,6 +35,15 @@ const ADMIN_CSS = `
 .a-note { font-size:13px; border-radius:10px; padding:10px 14px; margin-bottom:18px; }
 .a-note.ok { background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.3); color:#4ade80; }
 .a-note.err { background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.3); color:#f87171; }
+.og-builder { display:flex; flex-direction:column; gap:10px; }
+.og-group { border:1px solid #4a4640; border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:8px; background:#242220; }
+.og-group-head { display:flex; gap:8px; align-items:center; }
+.og-opts { display:flex; flex-direction:column; gap:6px; padding-left:14px; border-left:2px solid #3a3733; margin-left:2px; }
+.og-opt { display:flex; gap:8px; align-items:center; }
+.og-del { background:transparent; border:1px solid rgba(248,113,113,0.35); color:#f87171; border-radius:8px; width:34px; height:34px; flex-shrink:0; cursor:pointer; font-size:18px; line-height:1; font-family:inherit; }
+.og-del:hover { background:rgba(248,113,113,0.1); }
+.og-add-opt, .og-add-group { align-self:flex-start; padding:7px 14px; background:#2e2e2e; border:1px solid #4a4640; border-radius:999px; color:#b8b4ae; font-size:12px; cursor:pointer; font-family:inherit; }
+.og-add-opt:hover, .og-add-group:hover { color:#f0ede8; border-color:#5a5650; }
 `
 
 export default async function DashLayout({ children }) {

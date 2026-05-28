@@ -6,9 +6,26 @@ export const dynamic = 'force-dynamic'
 
 const back = (req, status) => NextResponse.redirect(new URL(`/admin/products?status=${status}`, req.url), 303)
 
-// One group per line:  "Format: A4, 50×70 cm, A3"
+// Accepts JSON from the visual builder (preferred) or legacy "Name: a, b" lines.
 function parseOptionGroups(raw) {
-  return String(raw || '')
+  const str = String(raw || '').trim()
+  if (!str) return []
+
+  if (str.startsWith('[')) {
+    try {
+      const arr = JSON.parse(str)
+      if (Array.isArray(arr)) {
+        return arr
+          .map(g => ({
+            name: String(g?.name || '').trim(),
+            options: Array.isArray(g?.options) ? g.options.map(o => String(o).trim()).filter(Boolean) : [],
+          }))
+          .filter(g => g.name && g.options.length)
+      }
+    } catch {}
+  }
+
+  return str
     .split('\n')
     .map(line => {
       const i = line.indexOf(':')

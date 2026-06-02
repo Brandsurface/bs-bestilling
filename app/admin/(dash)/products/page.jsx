@@ -26,7 +26,7 @@ function groupsToJson(p) {
 export default async function AdminProducts({ searchParams }) {
   const { data: products } = await supabase
     .from('products')
-    .select('id, grp, label, description, formats, option_groups, sort, active')
+    .select('id, grp, label, description, formats, option_groups, sort, active, allow_custom_format')
     .order('grp', { ascending: true })
     .order('sort', { ascending: true })
 

@@ -232,6 +232,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 /* ── Product accordion ── */
 .produkt-acc { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color 0.2s; }
 .produkt-acc:hover { border-color: var(--border-light); }
+.produkt-acc.filled { border-color: rgba(74,222,128,0.45); }
+.acc-check { display: none; width: 20px; height: 20px; border-radius: 50%; background: #4ade80; color: #0e0a00; align-items: center; justify-content: center; flex-shrink: 0; }
+.produkt-acc.filled .acc-check { display: inline-flex; }
 .produkt-acc-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; background: none; border: none; cursor: pointer; color: var(--text); font-family: inherit; text-align: left; }
 .acc-right { display: flex; align-items: center; gap: 10px; color: var(--text-3); flex-shrink: 0; }
 .acc-qty { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); }
@@ -1032,6 +1035,8 @@ function updateQtyBadge(pid) {
   if (!el || !badge) return;
   const v = parseInt(el.value) || 0;
   badge.textContent = v > 0 ? ('× ' + v) : '';
+  const acc = el.closest('.produkt-acc');
+  if (acc) acc.classList.toggle('filled', v > 0);
   if (v > 0) {
     el.classList.remove('error');
     document.getElementById('err-qty-' + pid)?.classList.remove('show');
@@ -1415,6 +1420,7 @@ function resetForm() {
   document.querySelectorAll('textarea').forEach(el => el.value = '');
   document.querySelectorAll('.format-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.produkt-acc.open').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.produkt-acc.filled').forEach(a => a.classList.remove('filled'));
   document.querySelectorAll('.acc-qty').forEach(b => b.textContent = '');
   Object.keys(selectedOptions).forEach(k => delete selectedOptions[k]);
   uploadedFiles = []; renderUploads();

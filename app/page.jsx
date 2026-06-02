@@ -45,7 +45,7 @@ function renderItem(p) {
           <div class="produkt-acc">
             <button type="button" class="produkt-acc-head" onclick="toggleProduct('${pid}')">
               <span class="produkt-name">${ICON}${esc(p.label)}</span>
-              <span class="acc-right"><span class="acc-qty" id="accqty-${pid}"></span>${CHEVRON}</span>
+              <span class="acc-right"><span class="acc-check" id="acccheck-${pid}" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="acc-qty" id="accqty-${pid}"></span>${CHEVRON}</span>
             </button>
             <div class="produkt-acc-body" id="accbody-${pid}">
               ${desc}${groupsHtml}

@@ -642,6 +642,11 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
             </div>
           </div>
 
+          <div class="field">
+            <label>Delivery date</label>
+            <input type="date" id="delivery_date"/>
+          </div>
+
           <div id="consent-container">
             <div class="alt-addr-toggle" id="legal-toggle" onclick="toggleLegal()" style="margin-top:0;">
               <div class="toggle-switch"></div>
@@ -822,6 +827,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       <div class="review-field"><div class="rf-label">Campaign</div><div class="rf-val" id="rv-butiksnavn">—</div></div>
       <div class="review-field"><div class="rf-label">Name</div><div class="rf-val" id="rv-navn">—</div></div>
       <div class="review-field full"><div class="rf-label">Email (confirmation sent here)</div><div class="rf-val" id="rv-email" style="color:var(--accent);font-family:'DM Mono',monospace;font-size:13px;">—</div></div>
+      <div class="review-field full"><div class="rf-label">Delivery date</div><div class="rf-val" id="rv-delivery-date">—</div></div>
     </div>
   </div>
 
@@ -1035,6 +1041,7 @@ async function prefillFromOrder(orderId) {
     if (d.butiksnavn) document.getElementById('butiksnavn').value = d.butiksnavn;
     if (d.navn)       document.getElementById('bestiller_navn').value = d.navn;
     if (d.email)      document.getElementById('bestiller_email').value = d.email;
+    if (d.delivery_date) document.getElementById('delivery_date').value = d.delivery_date;
 
     // Produkter
     if (Array.isArray(d.produkter)) {
@@ -1341,6 +1348,8 @@ function goToReview() {
   v('rv-butiksnavn', g('butiksnavn'));
   v('rv-navn', g('bestiller_navn'));
   v('rv-email', g('bestiller_email'));
+  const dd = g('delivery_date');
+  v('rv-delivery-date', dd ? new Date(dd).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—');
   v('rv-addrtype', addrType === 'butik' ? 'Business address' : 'Private address');
   v('rv-addr', [g('gade'), g('postnr'), g('by'), g('land')].filter(Boolean).join(', ') || '—');
   v('rv-att', g('att') || '—');
@@ -1480,6 +1489,7 @@ async function submitOrder() {
     butiksnavn:      g('butiksnavn'),
     navn:            g('bestiller_navn'),
     email:           g('bestiller_email'),
+    delivery_date:   g('delivery_date') || null,
     produkter,
     andet:           g('andet'),
     addr_type:       addrType,
@@ -1535,7 +1545,7 @@ function closePage() {
 }
 
 function resetForm() {
-  document.querySelectorAll('input[type="text"],input[type="email"]').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"],input[type="email"],input[type="date"]').forEach(el => el.value = '');
   document.querySelectorAll('input[type="number"]').forEach(el => el.value = 0);
   document.querySelectorAll('textarea').forEach(el => el.value = '');
   document.querySelectorAll('.format-chip').forEach(c => c.classList.remove('active'));

@@ -35,17 +35,22 @@ function renderItem(p) {
   const groups = effectiveGroups(p)
 
   const desc = p.description ? `<p class="acc-desc">${esc(p.description)}</p>` : ''
-  const groupsHtml = groups.map((g, gi) => `
+  const groupsHtml = groups.map((g, gi) => {
+    const cfmtInput = (p.allow_custom_format && gi === 0)
+      ? `<input type="text" id="cfmt-${pid}" class="custom-fmt-input" placeholder="Other format in mm" oninput="updateCustomFmt('${pid}',this)"/>`
+      : ''
+    return `
               <div class="opt-group">
                 <span class="opt-label">${esc(g.name)}</span>
-                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}</div>
-              </div>`).join('')
+                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}${cfmtInput}</div>
+              </div>`
+  }).join('')
 
   return `
           <div class="produkt-acc">
             <button type="button" class="produkt-acc-head" onclick="toggleProduct('${pid}')">
               <span class="produkt-name">${ICON}${esc(p.label)}</span>
-              <span class="acc-right"><span class="acc-qty" id="accqty-${pid}"></span>${CHEVRON}</span>
+              <span class="acc-right"><span class="acc-check" id="acccheck-${pid}" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="acc-qty" id="accqty-${pid}"></span>${CHEVRON}</span>
             </button>
             <div class="produkt-acc-body" id="accbody-${pid}">
               ${desc}${groupsHtml}
@@ -98,6 +103,7 @@ async function buildProducts() {
     qty: 'qty-' + p.id,
     cmt: 'cmt-' + p.id,
     groups: effectiveGroups(p).map(g => g.name),
+    customFormat: !!p.allow_custom_format,
   }))
   const json = JSON.stringify(arr).replace(/</g, '\\u003c')
   return { sections, dataScript: `window.__PRODUCTS = ${json}; window.__SUPABASE_URL = ${JSON.stringify(supabaseUrl)};` }

@@ -62,6 +62,7 @@ export async function POST(req) {
     const id = String(form.get('id') || '')
     if (!id) return back(req, 'invalid')
     fields.active = form.get('active') === 'on'
+    fields.allow_custom_format = form.get('allow_custom_format') === 'on'
     const { error } = await supabase.from('products').update(fields).eq('id', id)
     return back(req, error ? 'error' : 'saved')
   }

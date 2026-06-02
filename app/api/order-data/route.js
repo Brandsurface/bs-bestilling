@@ -24,6 +24,7 @@ export async function GET(request) {
     butiksnavn:      order.butiksnavn,
     navn:            order.navn,
     email:           order.email,
+    delivery_date:   order.delivery_date,
     produkter:       order.produkter,
     andet:           order.andet,
     addr_type:       order.addr_type,

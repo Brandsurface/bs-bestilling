@@ -56,6 +56,7 @@ export async function POST(request) {
         butiksnavn:      body.butiksnavn,
         navn:            body.navn,
         email:           body.email,
+        delivery_date:   body.delivery_date || null,
         produkter:       body.produkter || [],
         andet:           body.andet || null,
         addr_type:       body.addr_type || 'butik',

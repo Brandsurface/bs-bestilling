@@ -308,28 +308,29 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 .collapse-content.open { display: block; animation: fadeUp 0.3s ease; }
 
 /* ── Order process guide ── */
-.form-outer { display: grid; grid-template-columns: 236px 1fr; gap: 28px; align-items: start; }
+.form-outer { display: grid; grid-template-columns: 340px 1fr; gap: 28px; align-items: start; }
 .form-guide-panel { position: sticky; top: 80px; }
+.orderhelp { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; transition: border-color 0.2s; }
+.orderhelp:hover { border-color: rgba(241,86,46,0.35); }
 .orderhelp-trigger {
-  width: 100%; padding: 13px 16px;
-  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-xl);
+  width: 100%; padding: 18px 20px;
+  background: transparent; border: none; border-radius: 0;
   color: var(--text); cursor: pointer; display: flex; align-items: center;
-  justify-content: space-between; gap: 10px; transition: all 0.2s; text-align: left;
+  justify-content: space-between; gap: 10px; transition: background 0.2s; text-align: left;
 }
-.orderhelp-trigger:hover { border-color: rgba(241,86,46,0.35); }
-.orderhelp-trigger.open { border-color: rgba(241,86,46,0.35); background: var(--accent-dim2); border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
-.orderhelp-trigger .collapse-chevron { color: var(--text-2); flex-shrink: 0; }
+.orderhelp-trigger:hover { background: var(--accent-dim2); }
+.orderhelp-trigger .collapse-chevron { color: var(--text-2); flex-shrink: 0; transition: transform 0.2s; }
 .orderhelp-trigger.open .collapse-chevron { transform: rotate(180deg); color: var(--accent); }
-.orderhelp-head { display: flex; align-items: center; gap: 10px; }
+.orderhelp-head { display: flex; align-items: center; gap: 12px; }
 .orderhelp-icon {
-  width: 34px; height: 34px; border-radius: 9px; flex-shrink: 0;
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
   background: var(--accent-dim); border: 1px solid rgba(241,86,46,0.25); color: var(--accent);
   display: flex; align-items: center; justify-content: center;
 }
 .orderhelp-titles { display: flex; flex-direction: column; gap: 2px; }
-.orderhelp-title { font-size: 13px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
-.orderhelp-sub { font-size: 11px; color: var(--text-2); line-height: 1.3; }
-.orderhelp-content { display: none; padding: 4px 14px 18px; background: var(--surface-2); border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-xl) var(--radius-xl); max-height: calc(100vh - 160px); overflow-y: auto; }
+.orderhelp-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.orderhelp-sub { font-size: 12px; color: var(--text-2); line-height: 1.3; }
+.orderhelp-content { display: none; padding: 0 20px 20px; }
 .orderhelp-content.open { display: block; animation: fadeUp 0.3s ease; }
 .oh-steps { display: flex; flex-direction: column; }
 .oh-step { display: flex; gap: 12px; position: relative; padding: 14px 0; }
@@ -548,7 +549,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
       </span>
       <svg class="collapse-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </button>
-    <div class="orderhelp-content" id="oh-content">
+    <div class="orderhelp-content open" id="oh-content">
       <div class="oh-steps">
         <div class="oh-step">
           <div class="oh-badge">1</div>

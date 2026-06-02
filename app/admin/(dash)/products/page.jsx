@@ -91,6 +91,9 @@ export default async function AdminProducts({ searchParams }) {
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#b8b4ae', height: 40 }}>
                   <input type="checkbox" name="active" defaultChecked={p.active} /> Active
                 </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#b8b4ae', height: 40 }}>
+                  <input type="checkbox" name="allow_custom_format" defaultChecked={p.allow_custom_format} /> Custom format field
+                </label>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                 <label className="a-label">Description</label>

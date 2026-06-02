@@ -35,11 +35,16 @@ function renderItem(p) {
   const groups = effectiveGroups(p)
 
   const desc = p.description ? `<p class="acc-desc">${esc(p.description)}</p>` : ''
-  const groupsHtml = groups.map((g, gi) => `
+  const groupsHtml = groups.map((g, gi) => {
+    const cfmtInput = (p.allow_custom_format && gi === 0)
+      ? `<input type="text" id="cfmt-${pid}" class="custom-fmt-input" placeholder="Other format in mm" oninput="updateCustomFmt('${pid}',this)"/>`
+      : ''
+    return `
               <div class="opt-group">
                 <span class="opt-label">${esc(g.name)}</span>
-                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}</div>
-              </div>`).join('')
+                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}${cfmtInput}</div>
+              </div>`
+  }).join('')
 
   return `
           <div class="produkt-acc">
@@ -98,6 +103,7 @@ async function buildProducts() {
     qty: 'qty-' + p.id,
     cmt: 'cmt-' + p.id,
     groups: effectiveGroups(p).map(g => g.name),
+    customFormat: !!p.allow_custom_format,
   }))
   const json = JSON.stringify(arr).replace(/</g, '\\u003c')
   return { sections, dataScript: `window.__PRODUCTS = ${json}; window.__SUPABASE_URL = ${JSON.stringify(supabaseUrl)};` }

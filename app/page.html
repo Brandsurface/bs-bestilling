@@ -210,6 +210,17 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 .format-chip.active {
   background: var(--accent-dim); border-color: rgba(241,86,46,0.5); color: var(--accent);
 }
+.custom-fmt-input {
+  padding: 5px 10px; border-radius: 6px; width: 148px;
+  border: 1px solid var(--border); background: var(--surface-3);
+  color: var(--text-2); font-family: 'DM Mono', monospace;
+  font-size: 11px; outline: none; transition: all 0.18s;
+}
+.custom-fmt-input::placeholder { color: var(--text-3); }
+.custom-fmt-input:focus { border-color: rgba(241,86,46,0.35); color: var(--text); }
+.custom-fmt-input.active {
+  background: var(--accent-dim); border-color: rgba(241,86,46,0.5); color: var(--accent);
+}
 
 /* Quantity stepper */
 .qty-stepper {
@@ -906,6 +917,24 @@ let uploadedFiles = []; // { path, name, size }
 /*PRODUCTS_JSON*/
 const PRODUCTS = window.__PRODUCTS || [];
 const selectedOptions = {}; // { pid: { groupName: value } }
+const customFormats = {};   // { pid: string }
+
+function updateCustomFmt(pid, el) {
+  const v = el.value.trim();
+  customFormats[pid] = v;
+  el.classList.toggle('active', v.length > 0);
+  // deselect any chip in same group when user types a custom value
+  if (v) {
+    const chips = el.parentElement ? el.parentElement.querySelectorAll('.format-chip.active') : [];
+    chips.forEach(c => c.classList.remove('active'));
+    const prod = PRODUCTS.find(p => p.pid === pid);
+    if (prod && prod.groups[0]) {
+      selectedOptions[pid] = selectedOptions[pid] || {};
+      delete selectedOptions[pid][prod.groups[0]];
+    }
+  }
+}
+
 const ARTWORK_TYPE = 'Artwork';
 const SMASH_TYPE = 'Smash upload link';
 
@@ -1251,11 +1280,13 @@ function goToReview() {
   const rvProd = document.getElementById('rv-products');
   rvProd.innerHTML = '';
 
-  PRODUCTS.forEach(({ type, pid, qty: qtyId, cmt, groups }) => {
+  PRODUCTS.forEach(({ type, pid, qty: qtyId, cmt, groups, customFormat }) => {
     const qty = parseInt(document.getElementById(qtyId)?.value || 0);
     if (qty <= 0) return;
     const opts = selectedOptions[pid] || {};
-    const optStr = groups.map(n => {
+    const cfmt = customFormat ? (customFormats[pid] || '') : '';
+    const optStr = groups.map((n, gi) => {
+      if (customFormat && gi === 0 && cfmt) return `${escHtml(n)}: ${escHtml(cfmt)}`;
       const v = opts[n];
       if (!v || (Array.isArray(v) && !v.length)) return null;
       return `${escHtml(n)}: ${escHtml(Array.isArray(v) ? v.join(', ') : v)}`;
@@ -1342,12 +1373,17 @@ async function submitOrder() {
 
   // Collect products
   const produkter = [];
-  PRODUCTS.forEach(({ type, pid, qty: qtyId, cmt, groups }) => {
+  PRODUCTS.forEach(({ type, pid, qty: qtyId, cmt, groups, customFormat }) => {
     const antal = parseInt(document.getElementById(qtyId)?.value || 0);
     if (antal <= 0) return;
     const entry = { type, antal };
+    const cfmt = customFormat ? (customFormats[pid] || '') : '';
     const opts = {};
-    groups.forEach(n => { const v = selectedOptions[pid] && selectedOptions[pid][n]; if (Array.isArray(v) ? v.length : v) opts[n] = v; });
+    groups.forEach((n, gi) => {
+      if (customFormat && gi === 0 && cfmt) { opts[n] = cfmt; return; }
+      const v = selectedOptions[pid] && selectedOptions[pid][n];
+      if (Array.isArray(v) ? v.length : v) opts[n] = v;
+    });
     if (Object.keys(opts).length) entry.options = opts;
     const comment = document.getElementById(cmt)?.value.trim();
     if (comment) entry.comment = comment;
@@ -1423,6 +1459,8 @@ function resetForm() {
   document.querySelectorAll('.produkt-acc.filled').forEach(a => a.classList.remove('filled'));
   document.querySelectorAll('.acc-qty').forEach(b => b.textContent = '');
   Object.keys(selectedOptions).forEach(k => delete selectedOptions[k]);
+  Object.keys(customFormats).forEach(k => delete customFormats[k]);
+  document.querySelectorAll('.custom-fmt-input').forEach(el => { el.value = ''; el.classList.remove('active'); });
   uploadedFiles = []; renderUploads();
   addrType = 'butik'; setAddrTab('butik');
   if (altAddrActive) toggleAltAddr();

@@ -791,7 +791,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
       <!-- Salgskonsulent -->
       <div class="card">
-        <div class="card-label">Carlsberg Sales Consultant</div>
+        <div class="card-label">Sales Consultant</div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div class="field">
             <label>Name</label>
@@ -803,7 +803,7 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
           </div>
           <div class="field">
             <label>Email</label>
-            <input type="email" id="konsulent_email" placeholder="consultant@carlsberg.dk"/>
+            <input type="email" id="konsulent_email" placeholder="consultant@example.com"/>
           </div>
         </div>
       </div>
@@ -921,18 +921,16 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
     </div>
   </div>
 
-  <button class="btn-secondary btn-grey" onclick="editSubmittedOrder()" style="margin:0 auto 14px;">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Edit order
-  </button>
-  <button class="btn-primary" onclick="closePage()" style="margin:0 auto 14px;">
-    Done — Thank You!
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <button class="btn-ghost" onclick="resetForm()" style="margin:0 auto;">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Place new order
-  </button>
+  <div style="display:flex;flex-direction:column;gap:12px;align-items:stretch;width:100%;max-width:320px;margin:0 auto;">
+    <button class="btn-secondary btn-grey" onclick="editSubmittedOrder()" style="width:100%;justify-content:center;">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11 7H3M7 3l-4 4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Edit order
+    </button>
+    <button class="btn-primary" onclick="closePage()" style="width:100%;justify-content:center;">
+      Done — Thank You!
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
 </div>
 </div><!-- /view-confirm -->
 

@@ -17,7 +17,7 @@ function groupsToJson(p) {
   if (Array.isArray(p?.option_groups) && p.option_groups.length) {
     return p.option_groups
       .filter(g => g && g.name)
-      .map(g => ({ name: g.name, options: Array.isArray(g.options) ? g.options : [] }))
+      .map(g => ({ name: g.name, options: Array.isArray(g.options) ? g.options : [], recommended: Array.isArray(g.recommended) ? g.recommended : [] }))
   }
   if (Array.isArray(p?.formats) && p.formats.length) return [{ name: 'Format', options: p.formats }]
   return []

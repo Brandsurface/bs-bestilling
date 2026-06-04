@@ -41,10 +41,11 @@ function renderItem(p, t) {
     const cfmtInput = (p.allow_custom_format && gi === 0)
       ? `<input type="text" id="cfmt-${pid}" class="custom-fmt-input" placeholder="${esc(t.custom_fmt_ph)}" oninput="updateCustomFmt('${pid}',this)"/>`
       : ''
+    const rec = Array.isArray(g.recommended) ? g.recommended : []
     return `
               <div class="opt-group">
                 <span class="opt-label">${esc(g.name)}</span>
-                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}${cfmtInput}</div>
+                <div class="opt-chips" id="opt-${pid}-${gi}">${g.options.map(o => `<span class="format-chip${rec.includes(o) ? ' rec' : ''}" onclick="selectOption(this,'${pid}',${gi})">${esc(o)}</span>`).join('')}${cfmtInput}</div>
               </div>`
   }).join('')
 

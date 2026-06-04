@@ -16,10 +16,13 @@ function parseOptionGroups(raw) {
       const arr = JSON.parse(str)
       if (Array.isArray(arr)) {
         return arr
-          .map(g => ({
-            name: String(g?.name || '').trim(),
-            options: Array.isArray(g?.options) ? g.options.map(o => String(o).trim()).filter(Boolean) : [],
-          }))
+          .map(g => {
+            const options = Array.isArray(g?.options) ? g.options.map(o => String(o).trim()).filter(Boolean) : []
+            const recommended = Array.isArray(g?.recommended)
+              ? g.recommended.map(o => String(o).trim()).filter(v => options.includes(v))
+              : []
+            return { name: String(g?.name || '').trim(), options, recommended }
+          })
           .filter(g => g.name && g.options.length)
       }
     } catch {}

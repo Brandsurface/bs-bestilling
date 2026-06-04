@@ -45,13 +45,18 @@ create table if not exists orders (
 );
 
 -- Automatisk updated_at
+-- search_path pinnes til '' (tom) for at undgå "Function Search Path Mutable"
+-- linter-advarslen. now() ligger i pg_catalog og resolves stadig korrekt.
 create or replace function set_updated_at()
-returns trigger as $$
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
 begin
   new.updated_at = now();
   return new;
 end;
-$$ language plpgsql;
+$$;
 
 drop trigger if exists orders_updated_at on orders;
 create trigger orders_updated_at

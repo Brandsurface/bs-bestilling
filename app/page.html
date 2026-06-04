@@ -316,6 +316,9 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 .help-box-content a:hover { text-decoration: underline; }
 
 /* File uploads */
+.brief-attach-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 6px 12px; background: none; border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-3); font-family: inherit; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+.brief-attach-btn:hover { border-color: rgba(241,86,46,0.45); color: var(--text-2); }
+.brief-attach-btn svg { color: var(--accent); }
 .upload-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; background: var(--surface-3); border: 1px dashed var(--border-light); border-radius: var(--radius); color: var(--text-2); cursor: pointer; font-size: 13px; width: fit-content; transition: all 0.2s; }
 .upload-btn:hover { border-color: rgba(241,86,46,0.45); color: var(--text); }
 .upload-btn svg { color: var(--accent); }
@@ -712,6 +715,10 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
         <div class="andet-card">
           <textarea id="andet" placeholder="{{brief_ph}}"></textarea>
         </div>
+        <button type="button" class="brief-attach-btn" onclick="document.getElementById('file-input').click()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          {{attach_btn}}
+        </button>
 
         <!-- Artwork -->
         <div class="produkt-section-label">{{artwork_section}}</div>

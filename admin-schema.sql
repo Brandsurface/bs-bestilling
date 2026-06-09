@@ -57,6 +57,19 @@ create table if not exists products (
 alter table products add column if not exists description   text;
 alter table products add column if not exists option_groups jsonb not null default '[]';
 
+-- Per-language product texts. label/description stay as the legacy fallback.
+-- Each language is edited independently from the admin EN|DA switcher.
+alter table products add column if not exists label_en       text;
+alter table products add column if not exists label_da       text;
+alter table products add column if not exists description_en text;
+alter table products add column if not exists description_da text;
+
+-- Backfill: start both languages from the current single value (idempotent)
+update products set label_en       = coalesce(label_en, label),
+                    label_da       = coalesce(label_da, label),
+                    description_en = coalesce(description_en, description),
+                    description_da = coalesce(description_da, description);
+
 -- Seed the full catalogue (only when the table is still empty)
 insert into products (grp, label, description, option_groups, sort)
 select v.grp, v.label, v.description, v.option_groups::jsonb, v.sort

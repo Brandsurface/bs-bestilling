@@ -30,13 +30,20 @@ function effectiveGroups(p) {
   return []
 }
 
-function renderItem(p, t) {
+// Per-language product text with fallback to the legacy single-value column
+function txt(p, field, lang) {
+  return p[`${field}_${lang}`] || p[field] || ''
+}
+
+function renderItem(p, t, lang) {
   const pid = p.id
   const qid = 'qty-' + pid
   const cid = 'cmt-' + pid
   const groups = effectiveGroups(p)
+  const label = txt(p, 'label', lang)
+  const description = txt(p, 'description', lang)
 
-  const desc = p.description ? `<p class="acc-desc">${esc(p.description)}</p>` : ''
+  const desc = description ? `<p class="acc-desc">${esc(description)}</p>` : ''
   const groupsHtml = groups.map((g, gi) => {
     const cfmtInput = (p.allow_custom_format && gi === 0)
       ? `<input type="text" id="cfmt-${pid}" class="custom-fmt-input" placeholder="${esc(t.custom_fmt_ph)}" oninput="updateCustomFmt('${pid}',this)"/>`
@@ -50,14 +57,14 @@ function renderItem(p, t) {
   }).join('')
 
   const addBtn = p.allow_duplicate
-    ? `<button type="button" class="add-instance-btn" onclick="addProductInstance('${pid}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> ${esc(p.label)}</button>`
+    ? `<button type="button" class="add-instance-btn" onclick="addProductInstance('${pid}')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg> ${esc(label)}</button>`
     : ''
 
   return `
           <div class="produkt-group" id="prodgrp-${pid}">
           <div class="produkt-acc" id="prodacc-${pid}">
             <button type="button" class="produkt-acc-head" onclick="toggleProduct('${pid}')">
-              <span class="produkt-name">${ICON}${esc(p.label)}</span>
+              <span class="produkt-name">${ICON}${esc(label)}</span>
               <span class="acc-right"><span class="acc-qty" id="accqty-${pid}"></span>${CHEVRON}</span>
             </button>
             <div class="produkt-acc-body" id="accbody-${pid}">
@@ -85,7 +92,7 @@ function renderItem(p, t) {
           </div>`
 }
 
-async function buildProducts(t) {
+async function buildProducts(t, lang) {
   let products = []
   try {
     const { data, error } = await supabase
@@ -107,12 +114,12 @@ async function buildProducts(t) {
     const rows = products.filter(p => p.grp === g)
     if (!rows.length) continue
     sections += `        <div class="produkt-section-label">${esc(GROUP_LABELS[g] || g)}</div>\n` +
-                `        <div class="produkt-list">${rows.map(p => renderItem(p, t)).join('')}\n        </div>\n\n`
+                `        <div class="produkt-list">${rows.map(p => renderItem(p, t, lang)).join('')}\n        </div>\n\n`
   }
 
   const supabaseUrl = (process.env.NEXT_PUBLIC_SUPABASE_URL || '').replace(/\/+$/, '')
   const arr = products.map(p => ({
-    type: p.label,
+    type: txt(p, 'label', lang),
     pid: p.id,
     qty: 'qty-' + p.id,
     cmt: 'cmt-' + p.id,
@@ -155,7 +162,7 @@ export default async function Home() {
   const filePath = path.join(process.cwd(), 'app', 'page.html')
   let html = fs.readFileSync(filePath, 'utf-8')
 
-  const [{ sections, dataScript }, helpBox] = await Promise.all([buildProducts(t), buildHelpBox()])
+  const [{ sections, dataScript }, helpBox] = await Promise.all([buildProducts(t, lang), buildHelpBox()])
   html = html.replace('        <!--PRODUCTS_SECTIONS-->', sections)
 
   // Inject products data + translations for client-side JS

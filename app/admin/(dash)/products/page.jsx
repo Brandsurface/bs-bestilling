@@ -15,7 +15,8 @@ function groupsToJson(p) {
 }
 
 export default async function AdminProducts({ searchParams }) {
-  const { t } = await getAdminT()
+  const { t, lang } = await getAdminT()
+  const LANG = lang.toUpperCase()
   const STATUS = {
     created: ['ok', t.st_created_product],
     saved: ['ok', t.st_saved],
@@ -33,7 +34,7 @@ export default async function AdminProducts({ searchParams }) {
 
   const { data: products } = await supabase
     .from('products')
-    .select('id, grp, label, description, formats, option_groups, sort, active, allow_custom_format, allow_duplicate')
+    .select('id, grp, label, label_en, label_da, description, description_en, description_da, formats, option_groups, sort, active, allow_custom_format, allow_duplicate')
     .order('grp', { ascending: true })
     .order('sort', { ascending: true })
 
@@ -80,10 +81,11 @@ export default async function AdminProducts({ searchParams }) {
             <form method="POST" action="/api/admin/products" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input type="hidden" name="action" value="update" />
               <input type="hidden" name="id" value={p.id} />
+              <input type="hidden" name="lang" value={lang} />
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'flex-end' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 2, minWidth: 180 }}>
-                  <label className="a-label">{t.products_name}</label>
-                  <input className="a-input" name="label" defaultValue={p.label} required />
+                  <label className="a-label">{t.products_name} ({LANG})</label>
+                  <input className="a-input" name="label" defaultValue={p[`label_${lang}`] ?? p.label ?? ''} required />
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 150 }}>
                   <label className="a-label">{t.products_group}</label>
@@ -106,8 +108,8 @@ export default async function AdminProducts({ searchParams }) {
                 </label>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <label className="a-label">{t.products_desc}</label>
-                <input className="a-input" name="description" defaultValue={p.description || ''} placeholder="—" />
+                <label className="a-label">{t.products_desc} ({LANG})</label>
+                <input className="a-input" name="description" defaultValue={p[`description_${lang}`] ?? p.description ?? ''} placeholder="—" />
               </div>
               <OptionGroupsBuilder initial={groupsToJson(p)} t={ogT} />
               <button type="submit" className="a-btn-2" style={{ alignSelf: 'flex-start' }}>{t.products_save}</button>

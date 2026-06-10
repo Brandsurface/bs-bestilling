@@ -69,7 +69,7 @@ function addProductInstance(pid) {
   const html = renderInstanceHTML(cfg, spid, n);
   const grp = document.getElementById('prodgrp-' + pid);
   if (grp) grp.insertAdjacentHTML('beforeend', html);
-  extraEntries.push({ type: cfg.type, pid: spid, qty: 'qty-' + spid, cmt: 'cmt-' + spid, groups: cfg.groups, groupDefs: cfg.groupDefs, customFormat: cfg.customFormat });
+  extraEntries.push({ type: cfg.type, pid: spid, qty: 'qty-' + spid, cmt: 'cmt-' + spid, groups: cfg.groups, groupDefs: cfg.groupDefs, customFormat: cfg.customFormat, allowMulti: cfg.allowMulti });
 }
 
 function removeProductInstance(spid) {
@@ -207,18 +207,23 @@ function toggleProduct(pid, forceOpen) {
 // is made in a group (a non-recommended chip, or a typed custom format).
 function refreshRecState(container) {
   if (!container) return;
-  const activeChip = container.querySelector('.format-chip.active');
+  const activeChips = container.querySelectorAll('.format-chip.active');
   const activeCustom = container.querySelector('.custom-fmt-input.active');
-  const diverged = (activeChip && !activeChip.classList.contains('rec')) || !!activeCustom;
+  const diverged = Array.from(activeChips).some(c => !c.classList.contains('rec')) || !!activeCustom;
   container.classList.toggle('rec-hidden', diverged);
 }
 
-// ── Option selection (one choice per group) ──
+// ── Option selection (single choice, or multiple when the product allows it) ──
 function selectOption(chip, pid, groupIndex) {
+  const prod = PRODUCTS.find(p => p.pid === pid) || extraEntries.find(e => e.pid === pid);
+  const multi = !!(prod && prod.allowMulti);
   const wasActive = chip.classList.contains('active');
-  chip.parentElement.querySelectorAll('.format-chip.active').forEach(c => c.classList.remove('active'));
-  if (!wasActive) chip.classList.add('active');
-  const prod = PRODUCTS.find(p => p.pid === pid);
+  if (multi) {
+    chip.classList.toggle('active');
+  } else {
+    chip.parentElement.querySelectorAll('.format-chip.active').forEach(c => c.classList.remove('active'));
+    if (!wasActive) chip.classList.add('active');
+  }
   const name = prod && prod.groups[groupIndex];
   refreshRecState(chip.parentElement);
   if (!name) return;

@@ -36,7 +36,7 @@ export default async function AdminProducts({ searchParams }) {
 
   const { data: products } = await supabase
     .from('products')
-    .select('id, grp, label, label_en, label_da, description, description_en, description_da, formats, option_groups, option_groups_en, option_groups_da, sort, active, allow_custom_format, allow_duplicate')
+    .select('id, grp, label, label_en, label_da, description, description_en, description_da, formats, option_groups, option_groups_en, option_groups_da, sort, active, allow_custom_format, allow_duplicate, allow_multi')
     .order('grp', { ascending: true })
     .order('sort', { ascending: true })
 
@@ -107,6 +107,9 @@ export default async function AdminProducts({ searchParams }) {
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#b8b4ae', height: 40 }}>
                   <input type="checkbox" name="allow_duplicate" defaultChecked={p.allow_duplicate} /> {t.products_allow_duplicate}
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#b8b4ae', height: 40 }}>
+                  <input type="checkbox" name="allow_multi" defaultChecked={p.allow_multi} /> {t.products_allow_multi}
                 </label>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>

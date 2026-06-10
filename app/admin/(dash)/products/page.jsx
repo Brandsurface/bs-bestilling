@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase'
 import { getAdminT } from '@/lib/admin-i18n'
 import OptionGroupsBuilder from './OptionGroupsBuilder'
-import TranslateButton from './TranslateButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -116,12 +115,22 @@ export default async function AdminProducts({ searchParams }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <button type="submit" className="a-btn-2" style={{ alignSelf: 'flex-start' }}>{t.products_save}</button>
                 {lang === 'en' && (
-                  <TranslateButton
-                    labelId={`prod-label-${p.id}`}
-                    descId={`prod-desc-${p.id}`}
-                    labelDa={p.label_da ?? p.label ?? ''}
-                    descDa={p.description_da ?? p.description ?? ''}
-                  />
+                  <button
+                    type="button"
+                    data-tl={JSON.stringify({
+                      li: `prod-label-${p.id}`,
+                      di: `prod-desc-${p.id}`,
+                      ld: p.label_da ?? p.label ?? '',
+                      dd: p.description_da ?? p.description ?? '',
+                    })}
+                    title="Auto-translate from Danish"
+                    style={{
+                      background: '#1d4ed8', color: '#fff', border: 'none',
+                      borderRadius: 4, fontSize: 11, fontFamily: "'DM Mono',monospace",
+                      letterSpacing: '0.06em', padding: '3px 9px', cursor: 'pointer',
+                      lineHeight: '18px',
+                    }}
+                  >EN</button>
                 )}
               </div>
             </form>
@@ -136,6 +145,36 @@ export default async function AdminProducts({ searchParams }) {
           <div className="a-card" style={{ color: '#7a7672' }}>{t.products_empty}</div>
         )}
       </div>
+
+      <script dangerouslySetInnerHTML={{ __html: `
+        document.addEventListener('click', function(e) {
+          var btn = e.target.closest('[data-tl]');
+          if (!btn) return;
+          var d = JSON.parse(btn.dataset.tl);
+          var texts = [d.ld, d.dd].filter(Boolean);
+          if (!texts.length) return;
+          btn.textContent = '…';
+          btn.disabled = true;
+          fetch('/api/admin/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ texts: texts })
+          })
+          .then(function(r) { return r.json(); })
+          .then(function(res) {
+            if (res.error) throw new Error(res.error);
+            var i = 0;
+            if (d.ld) { var el = document.getElementById(d.li); if (el) el.value = res.translations[i++] || ''; }
+            if (d.dd) { var el = document.getElementById(d.di); if (el) el.value = res.translations[i++] || ''; }
+            btn.textContent = 'EN';
+          })
+          .catch(function(err) {
+            btn.textContent = 'EN';
+            alert('Oversættelse fejlede: ' + err.message);
+          })
+          .finally(function() { btn.disabled = false; });
+        });
+      ` }} />
     </>
   )
 }

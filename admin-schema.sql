@@ -68,6 +68,9 @@ alter table products add column if not exists description_da text;
 alter table products add column if not exists option_groups_en jsonb not null default '[]';
 alter table products add column if not exists option_groups_da jsonb not null default '[]';
 
+-- When true, option chips on the order form allow multiple selections per group.
+alter table products add column if not exists allow_multi boolean not null default false;
+
 -- Backfill: start both languages from the current single value (idempotent)
 update products set label_en       = coalesce(label_en, label),
                     label_da       = coalesce(label_da, label),

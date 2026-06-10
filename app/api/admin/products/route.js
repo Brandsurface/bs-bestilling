@@ -84,6 +84,7 @@ export async function POST(req) {
       active:              form.get('active') === 'on',
       allow_custom_format: form.get('allow_custom_format') === 'on',
       allow_duplicate:     form.get('allow_duplicate') === 'on',
+      allow_multi:         form.get('allow_multi') === 'on',
     }).eq('id', id)
     return back(req, error ? 'error' : 'saved')
   }

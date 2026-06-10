@@ -129,6 +129,7 @@ async function buildProducts(t, lang) {
     groupDefs: effectiveGroups(p, lang),
     customFormat: !!p.allow_custom_format,
     allowDuplicate: !!p.allow_duplicate,
+    allowMulti: !!p.allow_multi,
   }))
   const json = JSON.stringify(arr).replace(/</g, '\\u003c')
   return { sections, dataScript: `window.__PRODUCTS = ${json}; window.__SUPABASE_URL = ${JSON.stringify(supabaseUrl)};` }

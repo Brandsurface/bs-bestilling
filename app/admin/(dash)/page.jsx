@@ -123,10 +123,11 @@ export default async function AdminOrders({ searchParams }) {
                     <form method="POST" action="/api/admin/orders" style={{ marginTop: 6 }}>
                       <input type="hidden" name="action" value="set-delivery-date" />
                       <input type="hidden" name="id" value={o.id} />
-                      <input type="date" name="delivery_date" defaultValue={o.delivery_date || ''}
-                        className="delivery-date-input"
-                        style={{ background: '#1a1917', border: '1px solid #3a3733', borderRadius: 6, padding: '3px 6px', color: '#b8b4ae', fontSize: 12, fontFamily: "'DM Mono',monospace", cursor: 'pointer', outline: 'none' }}
-                        title={t.col_delivery_date || 'Delivery date'} />
+                      <label className="delivery-date-wrap" title={t.col_delivery_date || 'Delivery date'}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <input type="date" name="delivery_date" defaultValue={o.delivery_date || ''}
+                          className="delivery-date-input" />
+                      </label>
                     </form>
                   </td>
                   <td>

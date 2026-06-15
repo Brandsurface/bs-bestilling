@@ -18,7 +18,7 @@ const ADMIN_CSS = `
 .a-nav-right { margin-left:auto; display:flex; align-items:center; gap:14px; font-size:12px; color:#7a7672; }
 .a-nav-right a { color:#b8b4ae; text-decoration:none; }
 .a-nav-right a:hover { color:#f87171; }
-.a-wrap { max-width:1000px; margin:0 auto; padding:36px 28px 80px; }
+.a-wrap { max-width:1400px; margin:0 auto; padding:36px 28px 80px; }
 .a-h1 { font-size:28px; font-weight:800; letter-spacing:-0.02em; margin:0 0 6px; }
 .a-sub { color:#b8b4ae; font-size:14px; margin:0 0 28px; }
 .a-card { background:#1e1d1a; border:1px solid #4a4640; border-radius:16px; padding:20px; }

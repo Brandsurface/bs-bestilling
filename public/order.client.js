@@ -165,7 +165,7 @@ async function prefillFromOrder(orderId) {
     if (d.by)     document.getElementById('by').value = d.by;
     if (d.land)   document.getElementById('land').value = d.land;
     if (d.att)    document.getElementById('att').value = d.att;
-    if (d.tlf)    document.getElementById('tlf_lev').value = d.tlf;
+    if (d.tlf)    setPhone('tlf_lev', d.tlf);
 
     // Alternativ adresse
     if (d.alt_active && d.alt_gade) {
@@ -174,12 +174,12 @@ async function prefillFromOrder(orderId) {
       document.getElementById('alt_postnr').value = d.alt_postnr || '';
       document.getElementById('alt_by').value = d.alt_by || '';
       document.getElementById('alt_att').value = d.alt_att || '';
-      document.getElementById('alt_tlf').value = d.alt_tlf || '';
+      setPhone('alt_tlf', d.alt_tlf || '');
     }
 
     // Konsulent
     if (d.konsulent_navn)  document.getElementById('konsulent_navn').value = d.konsulent_navn;
-    if (d.konsulent_tlf)   document.getElementById('konsulent_tlf').value = d.konsulent_tlf;
+    if (d.konsulent_tlf)   setPhone('konsulent_tlf', d.konsulent_tlf);
     if (d.konsulent_email) document.getElementById('konsulent_email').value = d.konsulent_email;
 
     showToast((window.__T?.toast_order_loaded) || 'Order loaded — edit and resubmit', '');
@@ -354,6 +354,14 @@ function validate() {
     if (invalid) ok = false;
   });
 
+  // Phone number (delivery) is mandatory
+  const tlfEl = document.getElementById('tlf_lev');
+  const tlfErr = document.getElementById('err-tlf_lev');
+  const tlfInvalid = !tlfEl || !tlfEl.value.trim();
+  if (tlfEl) tlfEl.classList.toggle('error', tlfInvalid);
+  if (tlfErr) tlfErr.classList.toggle('show', tlfInvalid);
+  if (tlfInvalid) ok = false;
+
   // Open accordions with qty > 0 must be valid; open accordions with qty 0 only
   // block submission if no other product has been filled in.
   const allEntries = [...PRODUCTS, ...extraEntries];
@@ -458,9 +466,9 @@ function goToReview() {
   v('rv-addrtype', addrType === 'butik' ? (_rt.review_business_addr || 'Business address') : (_rt.review_private_addr || 'Private address'));
   v('rv-addr', [g('gade'), g('postnr'), g('by'), g('land')].filter(Boolean).join(', ') || '—');
   v('rv-att', g('att') || '—');
-  v('rv-tlf', g('tlf_lev') || '—');
+  v('rv-tlf', gPhone('tlf_lev') || '—');
   v('rv-k-navn', g('konsulent_navn') || '—');
-  v('rv-k-tlf', g('konsulent_tlf') || '—');
+  v('rv-k-tlf', gPhone('konsulent_tlf') || '—');
   v('rv-k-email', g('konsulent_email') || '—');
 
   // Alt addr
@@ -469,7 +477,7 @@ function goToReview() {
     altSec.style.display = '';
     v('rv-alt-addr', [g('alt_gade'), g('alt_postnr'), g('alt_by')].filter(Boolean).join(', '));
     v('rv-alt-att', g('alt_att') || '—');
-    v('rv-alt-tlf', g('alt_tlf') || '—');
+    v('rv-alt-tlf', gPhone('alt_tlf') || '—');
   } else {
     altSec.style.display = 'none';
   }
@@ -612,15 +620,15 @@ async function submitOrder() {
     by:              g('by'),
     land:            g('land'),
     att:             g('att'),
-    tlf:             g('tlf_lev'),
+    tlf:             gPhone('tlf_lev'),
     alt_active:      altAddrActive,
     alt_gade:        g('alt_gade'),
     alt_postnr:      g('alt_postnr'),
     alt_by:          g('alt_by'),
     alt_att:         g('alt_att'),
-    alt_tlf:         g('alt_tlf'),
+    alt_tlf:         gPhone('alt_tlf'),
     konsulent_navn:  g('konsulent_navn'),
-    konsulent_tlf:   g('konsulent_tlf'),
+    konsulent_tlf:   gPhone('konsulent_tlf'),
     konsulent_email: g('konsulent_email'),
     uploads:         uploadedFiles,
     previous_id:     window.__editId || null,
@@ -687,6 +695,22 @@ function resetForm() {
 }
 
 function g(id) { return document.getElementById(id)?.value?.trim() || ''; }
+// Returns combined country-code + number for a split phone field
+function gPhone(numId) {
+  const cc = document.getElementById(numId + '_cc')?.value || '+45';
+  const num = g(numId);
+  return num ? cc + ' ' + num : '';
+}
+// Restores a saved phone value (e.g. "+45 12345678") into the split fields
+function setPhone(numId, full) {
+  if (!full) return;
+  const sel = document.getElementById(numId + '_cc');
+  const inp = document.getElementById(numId);
+  if (!sel || !inp) return;
+  const m = full.match(/^(\+\d+)\s*(.*)$/);
+  if (m) { sel.value = m[1]; inp.value = m[2]; }
+  else inp.value = full;
+}
 function escHtml(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function v(id, val) { const el = document.getElementById(id); if (el) el.textContent = val || '—'; }
 function showView(id) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); document.getElementById(id).classList.add('active'); }

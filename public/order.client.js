@@ -3,7 +3,7 @@ let addrType = 'butik';
 let altAddrActive = false;
 let artworkRequested = false;
 let smashRequested = false;
-let uploadedFiles = []; // { path, name, size }
+let uploadedFiles = []; // { path, name, size, source: 'brief'|'attachment' }
 
 const PRODUCTS = window.__PRODUCTS || [];
 const selectedOptions = {}; // { pid: { groupName: value } }
@@ -256,7 +256,8 @@ function updateQtyBadge(pid) {
 
 // ── File uploads (direct to Supabase Storage via signed URL) ──
 const MAX_UPLOAD = 50 * 1024 * 1024;
-async function handleFiles(input) {
+async function handleFiles(input, source) {
+  source = source || 'attachment';
   const files = Array.from(input.files || []);
   input.value = '';
   for (const file of files) {
@@ -269,7 +270,7 @@ async function handleFiles(input) {
       if (!r.ok) throw new Error(d.error || 'Upload failed');
       const put = await fetch(d.uploadUrl, { method: 'PUT', headers: { 'content-type': file.type || 'application/octet-stream', 'x-upsert': 'true' }, body: file });
       if (!put.ok) throw new Error('Upload failed (' + put.status + ')');
-      uploadedFiles.push({ path: d.path, name: file.name, size: file.size });
+      uploadedFiles.push({ path: d.path, name: file.name, size: file.size, source });
       renderUploads();
       showToast(file.name + ' ' + (window.__T?.upload_uploaded || 'uploaded'), 'success');
     } catch (e) {
@@ -279,11 +280,15 @@ async function handleFiles(input) {
 }
 function removeUpload(i) { uploadedFiles.splice(i, 1); renderUploads(); }
 function renderUploads() {
-  const c = document.getElementById('upload-list');
-  if (!c) return;
-  c.innerHTML = uploadedFiles.map((f, i) =>
-    `<div class="upload-item"><span>📎 ${escHtml(f.name)}</span><button type="button" class="upload-remove" onclick="removeUpload(${i})" aria-label="Remove">×</button></div>`
-  ).join('');
+  const briefList = document.getElementById('brief-upload-list');
+  const attachList = document.getElementById('upload-list');
+  function itemHtml(f, globalIdx) {
+    return `<div class="upload-item"><span>📎 ${escHtml(f.name)}</span><button type="button" class="upload-remove" onclick="removeUpload(${globalIdx})" aria-label="Remove">×</button></div>`;
+  }
+  if (briefList) briefList.innerHTML = uploadedFiles
+    .map((f, i) => f.source === 'brief' ? itemHtml(f, i) : '').join('');
+  if (attachList) attachList.innerHTML = uploadedFiles
+    .map((f, i) => (f.source || 'attachment') !== 'brief' ? itemHtml(f, i) : '').join('');
 }
 
 // ── Address tabs ──

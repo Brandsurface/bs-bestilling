@@ -143,10 +143,12 @@
         <div class="andet-card">
           <textarea id="andet" placeholder="{{brief_ph}}"></textarea>
         </div>
-        <button type="button" class="brief-attach-btn" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input-brief" multiple style="display:none" accept=".pdf,.ai,.eps,.psd,.indd,.svg,.png,.jpg,.jpeg,.gif,.webp,.tif,.tiff,.zip,.mp4" onchange="handleFiles(this,'brief')"/>
+        <button type="button" class="brief-attach-btn" onclick="document.getElementById('file-input-brief').click()">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           {{attach_btn}}
         </button>
+        <div id="brief-upload-list" class="upload-list"></div>
 
         <!-- Artwork -->
         <div class="produkt-section-label">{{artwork_section}}</div>
@@ -166,7 +168,7 @@
         <div class="produkt-section-label">{{attachments_section}}</div>
         <div class="artwork-card">
           <label class="upload-btn">
-            <input type="file" id="file-input" multiple style="display:none" accept=".pdf,.ai,.eps,.psd,.indd,.svg,.png,.jpg,.jpeg,.gif,.webp,.tif,.tiff,.zip,.mp4" onchange="handleFiles(this)"/>
+            <input type="file" id="file-input" multiple style="display:none" accept=".pdf,.ai,.eps,.psd,.indd,.svg,.png,.jpg,.jpeg,.gif,.webp,.tif,.tiff,.zip,.mp4" onchange="handleFiles(this,'attachment')"/>
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
             {{attach_btn}}
           </label>

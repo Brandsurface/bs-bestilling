@@ -124,7 +124,7 @@ export default async function AdminOrders({ searchParams }) {
                       <input type="hidden" name="action" value="set-delivery-date" />
                       <input type="hidden" name="id" value={o.id} />
                       <input type="date" name="delivery_date" defaultValue={o.delivery_date || ''}
-                        onChange="this.form.submit()"
+                        className="delivery-date-input"
                         style={{ background: '#1a1917', border: '1px solid #3a3733', borderRadius: 6, padding: '3px 6px', color: '#b8b4ae', fontSize: 12, fontFamily: "'DM Mono',monospace", cursor: 'pointer', outline: 'none' }}
                         title={t.col_delivery_date || 'Delivery date'} />
                     </form>
@@ -196,6 +196,7 @@ export default async function AdminOrders({ searchParams }) {
         function upd(){var b=boxes(),c=b.filter(function(x){return x.checked;}).length;if(cnt)cnt.textContent=c;if(bar)bar.style.display=c?'flex':'none';if(all){all.checked=c>0&&c===b.length;all.indeterminate=c>0&&c<b.length;}}
         if(all)all.addEventListener('change',function(){boxes().forEach(function(x){x.checked=all.checked;});upd();});
         document.addEventListener('change',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('ord-check'))upd();});
+        document.addEventListener('change',function(e){if(e.target&&e.target.classList&&e.target.classList.contains('delivery-date-input'))e.target.form&&e.target.form.submit();});
       })();` }} />
     </>
   )

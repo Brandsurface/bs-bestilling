@@ -216,8 +216,15 @@
             <input type="text" id="att" placeholder="{{attn_ph}}"/>
           </div>
           <div class="field">
-            <label>{{phone_label}}</label>
-            <input type="text" id="tlf_lev" placeholder="{{phone_ph}}"/>
+            <label>{{phone_label}} <span class="req">*</span></label>
+            <div class="phone-row">
+              <select id="tlf_lev_cc" class="phone-cc">
+                <option value="+45">+45</option>
+                <option value="+299">+299</option>
+              </select>
+              <input type="tel" id="tlf_lev" placeholder="{{phone_ph}}" class="phone-num"/>
+            </div>
+            <div class="field-error" id="err-tlf_lev">{{phone_err}}</div>
           </div>
         </div>
 
@@ -248,7 +255,13 @@
           </div>
           <div class="field">
             <label>{{phone_label}}</label>
-            <input type="text" id="alt_tlf" placeholder="{{phone_ph}}"/>
+            <div class="phone-row">
+              <select id="alt_tlf_cc" class="phone-cc">
+                <option value="+45">+45</option>
+                <option value="+299">+299</option>
+              </select>
+              <input type="tel" id="alt_tlf" placeholder="{{phone_ph}}" class="phone-num"/>
+            </div>
           </div>
         </div>
       </div>
@@ -263,7 +276,13 @@
           </div>
           <div class="field">
             <label>{{phone_label}}</label>
-            <input type="text" id="konsulent_tlf" placeholder="{{phone_ph}}"/>
+            <div class="phone-row">
+              <select id="konsulent_tlf_cc" class="phone-cc">
+                <option value="+45">+45</option>
+                <option value="+299">+299</option>
+              </select>
+              <input type="tel" id="konsulent_tlf" placeholder="{{phone_ph}}" class="phone-num"/>
+            </div>
           </div>
           <div class="field">
             <label>{{email_label}}</label>

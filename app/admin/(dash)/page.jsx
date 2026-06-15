@@ -20,8 +20,8 @@ function fmtTime(iso, locale) {
   }
 }
 
-function productSummary(produkter) {
-  if (!Array.isArray(produkter) || !produkter.length) return '—'
+function productLines(produkter) {
+  if (!Array.isArray(produkter) || !produkter.length) return ['—']
   return produkter.map(p => {
     const qty = p.antal != null ? ` ×${p.antal}` : ''
     const opts = p.options
@@ -29,7 +29,11 @@ function productSummary(produkter) {
       : (p.format ? [p.format] : [])
     const extra = opts.length ? ` (${opts.join(', ')})` : ''
     return `${p.type}${extra}${qty}`
-  }).join(', ')
+  })
+}
+
+function productSummary(produkter) {
+  return productLines(produkter).join(', ')
 }
 
 // Derived display status for the badge
@@ -121,11 +125,19 @@ export default async function AdminOrders({ searchParams }) {
                     {o.navn || '—'}
                     <div style={{ color: '#7a7672', fontSize: 12 }}>{o.email}</div>
                   </td>
-                  <td style={{ color: '#b8b4ae', fontSize: 13, maxWidth: 320 }}>
-                    {productSummary(o.produkter)}
-                    {Array.isArray(o.uploads) && o.uploads.length > 0 && (
-                      <div style={{ color: '#7a7672', fontSize: 12, marginTop: 4 }}>📎 {o.uploads.length} {o.uploads.length > 1 ? t.files_many : t.files_one}</div>
-                    )}
+                  <td style={{ color: '#b8b4ae', fontSize: 13 }}>
+                    <div className="prod-cell">
+                      <div className="prod-clamp">{productSummary(o.produkter)}</div>
+                      <div className="prod-tooltip">
+                        {productLines(o.produkter).map((line, i) => <div key={i}>{line}</div>)}
+                        {Array.isArray(o.uploads) && o.uploads.length > 0 && (
+                          <div style={{ color: '#7a7672', fontSize: 12, marginTop: 6 }}>📎 {o.uploads.length} {o.uploads.length > 1 ? t.files_many : t.files_one}</div>
+                        )}
+                      </div>
+                      {Array.isArray(o.uploads) && o.uploads.length > 0 && (
+                        <div style={{ color: '#7a7672', fontSize: 12, marginTop: 4 }}>📎 {o.uploads.length} {o.uploads.length > 1 ? t.files_many : t.files_one}</div>
+                      )}
+                    </div>
                   </td>
                   <td><span className={`a-badge ${b.cls}`}>{b.text}</span></td>
                   <td>

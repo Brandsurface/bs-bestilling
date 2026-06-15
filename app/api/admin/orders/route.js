@@ -42,6 +42,13 @@ export async function POST(req) {
     return error ? back(req, 'error') : NextResponse.redirect(new URL('/admin', req.url), 303)
   }
 
+  if (action === 'set-delivery-date') {
+    const raw = String(form.get('delivery_date') || '').trim()
+    const val = raw.match(/^\d{4}-\d{2}-\d{2}$/) ? raw : null
+    const { error } = await supabase.from('orders').update({ delivery_date: val }).eq('id', id)
+    return error ? back(req, 'error') : NextResponse.redirect(new URL('/admin', req.url), 303)
+  }
+
   if (action === 'approve') {
     if (order.status !== 'pending') return back(req, 'notpending')
     await dispatchToBrandsurface(order)

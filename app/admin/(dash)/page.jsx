@@ -68,7 +68,7 @@ export default async function AdminOrders({ searchParams }) {
 
   const { data: orders, error } = await supabase
     .from('orders')
-    .select('id, created_at, status, butiksnavn, navn, email, produkter, revision, send_after, uploads, pm_status')
+    .select('id, created_at, status, butiksnavn, navn, email, produkter, revision, send_after, uploads, pm_status, delivery_date')
     .order('created_at', { ascending: false })
     .limit(200)
 
@@ -120,6 +120,14 @@ export default async function AdminOrders({ searchParams }) {
                   <td>
                     {o.butiksnavn || '—'}
                     {o.revision > 0 && <span style={{ color: '#7a7672', fontSize: 12 }}> · {t.rev_prefix} {o.revision}</span>}
+                    <form method="POST" action="/api/admin/orders" style={{ marginTop: 6 }}>
+                      <input type="hidden" name="action" value="set-delivery-date" />
+                      <input type="hidden" name="id" value={o.id} />
+                      <input type="date" name="delivery_date" defaultValue={o.delivery_date || ''}
+                        onChange="this.form.submit()"
+                        style={{ background: '#1a1917', border: '1px solid #3a3733', borderRadius: 6, padding: '3px 6px', color: '#b8b4ae', fontSize: 12, fontFamily: "'DM Mono',monospace", cursor: 'pointer', outline: 'none' }}
+                        title={t.col_delivery_date || 'Delivery date'} />
+                    </form>
                   </td>
                   <td>
                     {o.navn || '—'}

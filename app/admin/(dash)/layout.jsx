@@ -45,6 +45,9 @@ const ADMIN_CSS = `
 .pm-select.taken_further  { border-color:rgba(96,165,250,0.5);  color:#60a5fa; background:rgba(96,165,250,0.08); }
 .pm-select.completed      { border-color:rgba(74,222,128,0.4);  color:#4ade80; background:rgba(74,222,128,0.08); }
 .prod-cell { position:relative; max-width:200px; }
+.delivery-date-wrap { display:inline-flex; align-items:center; gap:5px; background:#1a1917; border:1px solid #4a4640; border-radius:6px; padding:3px 8px; color:#7a7672; cursor:pointer; font-size:12px; font-family:'DM Mono',monospace; }
+.delivery-date-wrap:hover { border-color:#7a7672; color:#b8b4ae; }
+.delivery-date-wrap input[type="date"] { background:transparent; border:none; outline:none; color:#b8b4ae; font-size:12px; font-family:'DM Mono',monospace; cursor:pointer; width:110px; color-scheme:dark; }
 .prod-clamp { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 .prod-tooltip { display:none; position:absolute; left:0; top:-8px; z-index:200; width:400px; background:#2a2825; border:1px solid #5a5650; border-radius:12px; padding:12px 14px; color:#f0ede8; line-height:1.6; box-shadow:0 8px 32px rgba(0,0,0,0.6); pointer-events:none; white-space:normal; }
 .prod-cell:hover .prod-clamp { opacity:0.3; }

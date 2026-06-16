@@ -156,6 +156,7 @@ async function prefillFromOrder(orderId) {
       });
     }
     if (d.andet) document.getElementById('andet').value = d.andet;
+    if (d.extra_notes) { const el = document.getElementById('extra-notes'); if (el) el.value = d.extra_notes; }
     if (Array.isArray(d.uploads)) { uploadedFiles = d.uploads.slice(); renderUploads(); }
 
     // Levering
@@ -285,10 +286,13 @@ function renderUploads() {
   function itemHtml(f, globalIdx) {
     return `<div class="upload-item"><span>📎 ${escHtml(f.name)}</span><button type="button" class="upload-remove" onclick="removeUpload(${globalIdx})" aria-label="Remove">×</button></div>`;
   }
+  const notesList = document.getElementById('notes-upload-list');
   if (briefList) briefList.innerHTML = uploadedFiles
     .map((f, i) => f.source === 'brief' ? itemHtml(f, i) : '').join('');
+  if (notesList) notesList.innerHTML = uploadedFiles
+    .map((f, i) => f.source === 'notes' ? itemHtml(f, i) : '').join('');
   if (attachList) attachList.innerHTML = uploadedFiles
-    .map((f, i) => (f.source || 'attachment') !== 'brief' ? itemHtml(f, i) : '').join('');
+    .map((f, i) => !f.source || f.source === 'attachment' ? itemHtml(f, i) : '').join('');
 }
 
 // ── Address tabs ──
@@ -516,6 +520,20 @@ function goToReview() {
     rvProd.appendChild(d);
   }
 
+  const extraNotes = g('extra-notes');
+  if (extraNotes) {
+    const d = document.createElement('div');
+    d.className = 'rv-produkt-row';
+    d.style.flexDirection = 'column';
+    d.style.alignItems = 'flex-start';
+    d.style.gap = '6px';
+    d.innerHTML = `
+      <div class="rv-produkt-name">${escHtml(_rt.card4_label || 'Additional notes')}</div>
+      <div style="font-size:13px;color:var(--text-2);line-height:1.5;white-space:pre-wrap;word-break:break-word;">${escHtml(extraNotes)}</div>
+    `;
+    rvProd.appendChild(d);
+  }
+
   if (artworkRequested) {
     const d = document.createElement('div');
     d.className = 'rv-produkt-row';
@@ -606,6 +624,7 @@ async function submitOrder() {
     delivery_date:   g('delivery_date') || null,
     produkter,
     andet:           g('andet'),
+    extra_notes:     g('extra-notes') || null,
     addr_type:       addrType,
     gade:            g('gade'),
     postnr:          g('postnr'),

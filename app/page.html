@@ -185,6 +185,20 @@
         <!--PRODUCTS_SECTIONS-->
       </div><!-- /produkter card -->
 
+      <!-- Yderligere bemærkninger (card 4) -->
+      <div class="card">
+        <div class="card-label"><span class="card-num">4</span>{{card4_label}}</div>
+        <div class="andet-card">
+          <textarea id="extra-notes" placeholder="{{card4_ph}}"></textarea>
+        </div>
+        <input type="file" id="file-input-notes" multiple style="display:none" accept=".pdf,.ai,.eps,.psd,.indd,.svg,.png,.jpg,.jpeg,.gif,.webp,.tif,.tiff,.zip,.mp4" onchange="handleFiles(this,'notes')"/>
+        <button type="button" class="brief-attach-btn" onclick="document.getElementById('file-input-notes').click()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          {{attach_btn}}
+        </button>
+        <div id="notes-upload-list" class="upload-list"></div>
+      </div><!-- /extra-notes card -->
+
     </div><!-- /grid-left -->
 
     <!-- ── Højre kolonne ── -->

@@ -758,3 +758,130 @@ function setLang(l) {
   window.addEventListener('resize', sync);
   sync();
 })();
+
+// ── Onboarding tour ──
+const TOUR_STEPS = [
+  { selector: '.step-pills',       titleKey: 'tour_flow_title',       bodyKey: 'tour_flow_body' },
+  { selector: '#butiksnavn',       titleKey: 'tour_campaign_title',   bodyKey: 'tour_campaign_body' },
+  { selector: '#bestiller_navn',   titleKey: 'tour_contact_title',    bodyKey: 'tour_contact_body' },
+  { selector: '#delivery_date',    titleKey: 'tour_date_title',       bodyKey: 'tour_date_body' },
+  { selector: '#legal-toggle',     titleKey: 'tour_legal_title',      bodyKey: 'tour_legal_body' },
+  { selector: '#andet',            titleKey: 'tour_brief_title',      bodyKey: 'tour_brief_body' },
+  { selector: '.brief-attach-btn', titleKey: 'tour_attach_title',     bodyKey: 'tour_attach_body' },
+  { selector: '#artwork-toggle',   titleKey: 'tour_artwork_title',    bodyKey: 'tour_artwork_body' },
+  {
+    selector: '.produkt-acc',
+    titleKey: 'tour_products_title',
+    bodyKey: 'tour_products_body',
+    beforeShow: function() {
+      var first = document.querySelector('.produkt-acc');
+      if (first && !first.parentElement.classList.contains('open')) {
+        var pid = first.id.replace('prodacc-', '');
+        if (pid) toggleProduct(pid, true);
+      }
+    }
+  },
+  { selector: '#extra-notes',      titleKey: 'tour_extra_title',      bodyKey: 'tour_extra_body' },
+  { selector: '#gade',             titleKey: 'tour_delivery_title',   bodyKey: 'tour_delivery_body' },
+  { selector: '#konsulent_navn',   titleKey: 'tour_consultant_title', bodyKey: 'tour_consultant_body' },
+  { selector: '.review-order-btn', titleKey: 'tour_review_title',     bodyKey: 'tour_review_body' },
+];
+
+var _tourIndex = 0;
+var _tourResizeHandler = null;
+
+function _tourDebounce(fn, ms) { var t; return function() { clearTimeout(t); t = setTimeout(fn, ms); }; }
+
+function startTour() {
+  if (!document.getElementById('view-form').classList.contains('active')) return;
+  _tourIndex = 0;
+  document.getElementById('tour-overlay').classList.add('active');
+  document.getElementById('tour-spotlight').classList.add('active');
+  document.getElementById('tour-tooltip').classList.add('active');
+  _showTourStep(0);
+  _tourResizeHandler = _tourDebounce(_repositionSpotlight, 80);
+  window.addEventListener('resize', _tourResizeHandler);
+  window.addEventListener('scroll', _tourResizeHandler, true);
+  document.addEventListener('keydown', _tourKeyHandler);
+}
+
+function endTour() {
+  ['tour-overlay','tour-spotlight','tour-tooltip'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.classList.remove('active');
+  });
+  if (_tourResizeHandler) {
+    window.removeEventListener('resize', _tourResizeHandler);
+    window.removeEventListener('scroll', _tourResizeHandler, true);
+    _tourResizeHandler = null;
+  }
+  document.removeEventListener('keydown', _tourKeyHandler);
+}
+
+function _tourKeyHandler(e) { if (e.key === 'Escape') endTour(); }
+
+function tourNext() {
+  if (_tourIndex < TOUR_STEPS.length - 1) { _tourIndex++; _showTourStep(_tourIndex); }
+  else endTour();
+}
+function tourPrev() {
+  if (_tourIndex > 0) { _tourIndex--; _showTourStep(_tourIndex); }
+}
+
+function _showTourStep(index) {
+  var step = TOUR_STEPS[index];
+  var _T = window.__T || {};
+  if (step.beforeShow) step.beforeShow();
+  var anchor = document.querySelector(step.selector);
+  if (!anchor) {
+    if (index < TOUR_STEPS.length - 1) { _tourIndex++; _showTourStep(_tourIndex); } else endTour();
+    return;
+  }
+  anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(function() {
+    _repositionSpotlight();
+    var total = TOUR_STEPS.length;
+    var counter = document.getElementById('tour-counter');
+    var titleEl = document.getElementById('tour-title');
+    var bodyEl = document.getElementById('tour-body');
+    var nextBtn = document.getElementById('tour-next');
+    var prevBtn = document.getElementById('tour-prev');
+    var skipBtn = document.getElementById('tour-skip');
+    if (counter) counter.textContent = (index + 1) + ' ' + (_T.tour_step_of || 'of') + ' ' + total;
+    if (titleEl) titleEl.textContent = _T[step.titleKey] || step.titleKey;
+    if (bodyEl)  bodyEl.textContent  = _T[step.bodyKey]  || step.bodyKey;
+    if (nextBtn) nextBtn.textContent = index === total - 1 ? (_T.tour_finish || 'Done') : (_T.tour_next || 'Next');
+    if (prevBtn) { prevBtn.disabled = index === 0; prevBtn.textContent = _T.tour_prev || 'Back'; }
+    if (skipBtn) skipBtn.textContent = _T.tour_skip || 'Skip';
+  }, 300);
+}
+
+function _repositionSpotlight() {
+  var step = TOUR_STEPS[_tourIndex];
+  var anchor = document.querySelector(step.selector);
+  if (!anchor) return;
+  var PAD = 8;
+  var rect = anchor.getBoundingClientRect();
+  var sp = document.getElementById('tour-spotlight');
+  if (sp) {
+    sp.style.top    = (rect.top    - PAD) + 'px';
+    sp.style.left   = (rect.left   - PAD) + 'px';
+    sp.style.width  = (rect.width  + PAD * 2) + 'px';
+    sp.style.height = (rect.height + PAD * 2) + 'px';
+  }
+  var tt = document.getElementById('tour-tooltip');
+  if (!tt) return;
+  var ttH = tt.offsetHeight || 220;
+  var spBottom = rect.bottom + PAD;
+  var spTop    = rect.top    - PAD;
+  var top = (spBottom + 12 + ttH > window.innerHeight)
+    ? Math.max(8, spTop - 12 - ttH)
+    : spBottom + 12;
+  var left = Math.min(Math.max(8, rect.left - PAD), window.innerWidth - tt.offsetWidth - 8);
+  tt.style.top  = top  + 'px';
+  tt.style.left = left + 'px';
+}
+
+(function() {
+  var overlay = document.getElementById('tour-overlay');
+  if (overlay) overlay.addEventListener('click', endTour);
+})();

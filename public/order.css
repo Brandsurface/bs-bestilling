@@ -543,3 +543,58 @@ textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
   .produkt-row { flex-wrap: wrap; }
   .produkt-row-options { justify-content: flex-start; order: 3; flex-basis: 100%; }
 }
+
+/* ── Onboarding tour ── */
+#tour-btn {
+  font-size: 11px; font-family: 'IBM Plex Mono', monospace; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border);
+  background: transparent; color: var(--text-2); cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+#tour-btn:hover { color: var(--text); border-color: var(--border-light); }
+
+#tour-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  pointer-events: all; background: transparent;
+}
+#tour-overlay.active { display: block; }
+
+#tour-spotlight {
+  display: none; position: fixed; z-index: 1001; pointer-events: none;
+  border-radius: 10px;
+  box-shadow: 0 0 0 max(200vh, 200vw) rgba(0,0,0,0.72);
+  transition: top 0.25s ease, left 0.25s ease, width 0.25s ease, height 0.25s ease;
+}
+#tour-spotlight.active { display: block; }
+
+#tour-tooltip {
+  display: none; position: fixed; z-index: 1002;
+  width: min(360px, 90vw);
+  background: var(--surface); border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+#tour-tooltip.active { display: block; }
+#tour-counter {
+  font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3);
+  margin-bottom: 8px;
+}
+#tour-title { font-size: 15px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+#tour-body { font-size: 13px; color: var(--text-2); line-height: 1.6; margin-bottom: 16px; }
+#tour-nav { display: flex; justify-content: space-between; align-items: center; }
+#tour-skip {
+  background: transparent; border: none; color: var(--text-3);
+  font-size: 12px; cursor: pointer; font-family: inherit; padding: 0;
+}
+#tour-skip:hover { color: var(--error); }
+#tour-prev, #tour-next {
+  padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit; border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); transition: border-color 0.2s, opacity 0.2s;
+}
+#tour-prev:hover, #tour-next:hover { border-color: var(--border-light); }
+#tour-next { background: var(--accent); border-color: var(--accent); color: #fff; }
+#tour-next:hover { opacity: 0.88; }
+#tour-prev:disabled { opacity: 0.35; cursor: default; }

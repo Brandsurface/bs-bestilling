@@ -22,6 +22,7 @@
     <div class="step-sep">›</div>
     <div class="step-pill" id="pill-3"><span class="step-dot"></span>{{step_sent}}</div>
   </div>
+  <button type="button" id="tour-btn" onclick="startTour()">{{tour_btn}}</button>
   <div class="lang-switcher">
     <button type="button" class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
     <span class="lang-sep">|</span>
@@ -187,7 +188,7 @@
 
       <!-- Yderligere bemærkninger (card 4) -->
       <div class="card">
-        <div class="card-label"><span class="card-num">4</span>{{card4_label}}</div>
+        <div class="card-label">{{card4_label}}</div>
         <div class="andet-card">
           <textarea id="extra-notes" placeholder="{{card4_ph}}"></textarea>
         </div>
@@ -439,6 +440,21 @@
 </div><!-- /page -->
 <div id="legal-overlay"></div>
 <div class="toast" id="toast"></div>
+
+<div id="tour-overlay"></div>
+<div id="tour-spotlight"></div>
+<div id="tour-tooltip">
+  <div id="tour-counter"></div>
+  <div id="tour-title"></div>
+  <div id="tour-body"></div>
+  <div id="tour-nav">
+    <button type="button" id="tour-skip" onclick="endTour()">{{tour_skip}}</button>
+    <div style="display:flex;gap:8px;">
+      <button type="button" id="tour-prev" onclick="tourPrev()">{{tour_prev}}</button>
+      <button type="button" id="tour-next" onclick="tourNext()">{{tour_next}}</button>
+    </div>
+  </div>
+</div>
 
 <script>/*PRODUCTS_JSON*/</script>
 <script src="/order.client.js"></script>
